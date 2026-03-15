@@ -18,6 +18,8 @@ flutter run -d web
 
 This game was written as part of the Flame Game Jam 2026.
 
+[itch.io entry](https://lea000.itch.io/elevate)
+
 ## Code & AI
 
 99% Human made code, written during the game jam period. The only AI-written code is in lib/utils/sky_color.dart still with some human tweaks. AI was consulted for some issues but more like using it as a search engine than writing code directly.

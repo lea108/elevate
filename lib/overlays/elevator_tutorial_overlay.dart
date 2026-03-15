@@ -258,7 +258,7 @@ const title4 = 'Where do people want to go?';
 const bodyText4 =
 """People travel between "outside" and their office and then back again.
 
-For now your elevator is very basic and does not tell you which floor people want to go off at. But there is an upgrade you can purchase to show this.
+A light on the left side of the elevator will indicate where people on the elevator wants to get off.
 """;
 
 const title5 = 'Don\'t be late ☹️😡';

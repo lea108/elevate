@@ -10,9 +10,15 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
   int floor;
   int roomIndex;
   RoomData roomData;
+  bool addRoof;
   late RectangleComponent _overlay;
 
-  Room(this.floor, this.roomIndex, this.roomData);
+  Room(this.floor, this.roomIndex, this.roomData, this.addRoof);
+
+  final Paint roofPaint = Paint()
+    ..color = Colors.black
+    ..strokeWidth = 2
+    ..style = PaintingStyle.stroke;
 
   @override
   Future<void> onLoad() async {
@@ -41,5 +47,15 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
       lightsOn ? Colors.transparent : Color.fromARGB(150, 0, 0, 0),
     );
     super.update(dt);
+  }
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+    canvas.drawLine(
+      Offset(-bleed!, -1),
+      Offset(size.x + bleed!, -1),
+      roofPaint,
+    );
   }
 }

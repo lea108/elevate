@@ -22,7 +22,9 @@ class Rooms extends PositionComponent with HasGameReference<MyGame> {
       final lvlRooms = b.rooms[lvl]!;
       for (var roomIndex = 0; roomIndex < lvlRooms.length; roomIndex += 1) {
         final roomData = lvlRooms[roomIndex];
-        final room = Room(lvl, roomIndex, lvlRooms[roomIndex])
+        final needRoof =
+            !b.rooms.containsKey(lvl + 1) || b.rooms.length <= roomIndex;
+        final room = Room(lvl, roomIndex, lvlRooms[roomIndex], needRoof)
           ..position = Vector2(
             roomData.startX * xScale,
             (GameConsts.maxFloorUp - lvl - 1) * yScale,

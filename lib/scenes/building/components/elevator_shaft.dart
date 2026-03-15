@@ -25,9 +25,9 @@ class ElevatorShaft extends RectangleComponent with HasGameReference<MyGame> {
   RectangleComponent? leftCable;
   RectangleComponent? rightCable;
 
-  final _backColor = Color.fromARGB(255, 105, 105, 105);
-  final _leftColor = const Color.fromARGB(255, 92, 92, 92);
-  final _bottomColor = const Color.fromARGB(255, 84, 84, 84);
+  final _bottomColor = Color.fromARGB(255, 130, 130, 130);
+  final _leftColor = const Color.fromARGB(255, 115, 115, 115);
+  final _backColor = const Color.fromARGB(255, 105, 105, 105);
   final _cableColor = Colors.black26;
 
   @override

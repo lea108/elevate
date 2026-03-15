@@ -39,7 +39,7 @@ class GameStatusbarOverlay extends StatelessWidget {
         onPressed: () {
           game.overlays.add(GameOverlay.inGameMenu.name);
         },
-        child: Icon(Icons.menu),
+        child: Icon(Icons.menu, size: 20),
       ),
     );
   }
@@ -198,7 +198,7 @@ class _Button extends StatelessWidget {
     return TextButton(
       style: ButtonStyle(
         padding: WidgetStatePropertyAll(
-          EdgeInsets.all(mediumPadding + 6),
+          EdgeInsets.all(mediumPadding + 4),
         ),
         backgroundColor: WidgetStatePropertyAll(Colors.transparent),
         foregroundColor: WidgetStatePropertyAll(Colors.white),

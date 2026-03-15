@@ -31,7 +31,7 @@ class StatusBarSection extends StatelessWidget {
               ? const EdgeInsets.only(right: 20)
               : EdgeInsets.zero,
           child: Container(
-            padding: padding ?? EdgeInsets.all(mediumPadding + 2),
+            padding: padding ?? EdgeInsets.all(mediumPadding),
             decoration: boxDecoration(
               time.skyColor,
               roundBottomLeft: roundBottomLeft,

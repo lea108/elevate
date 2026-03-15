@@ -8,11 +8,16 @@ class DialogBackdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mqSize = MediaQuery.sizeOf(context);
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Container(
         color: Color.fromARGB(50, 150, 150, 150),
-        child: FocusScope(canRequestFocus: true, autofocus: true, child: child),
+        child: FocusScope(
+          canRequestFocus: true,
+          autofocus: true,
+          child: child,
+        ),
       ),
     );
   }

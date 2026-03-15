@@ -11,6 +11,7 @@ class OverlayGamepadControl extends StatefulWidget {
   final Widget child;
   final bool? enabled;
   final void Function()? close;
+  final void Function()? beforeActivate;
   const OverlayGamepadControl({
     required this.game,
 
@@ -22,6 +23,9 @@ class OverlayGamepadControl extends StatefulWidget {
     /// If provided, this method is called when user asks to close the overlay.
     /// No automatic close of overlay if this method is added.
     this.close,
+
+    /// If provided, this method is called just before ActivateIntent is invoked
+    this.beforeActivate,
 
     /// If provided and set to false, the gamepad control of the overlay is temporarily
     /// disabled.
@@ -88,6 +92,9 @@ class _OverlayGamepadControlState extends State<OverlayGamepadControl> {
       }
       if (navConfirm) {
         if (focusedContext != null) {
+          if (widget.beforeActivate != null) {
+            widget.beforeActivate!();
+          }
           Actions.maybeInvoke(focusedContext, ActivateIntent());
         }
       }

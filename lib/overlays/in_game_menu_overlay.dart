@@ -3,6 +3,7 @@ import 'package:elevate/game.dart';
 import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/overlays/widgets/overlay_gamepad_control.dart';
+import 'package:elevate/theme/palette.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,6 @@ class InGameMenuOverlay extends StatelessWidget {
           game: game,
           overlay: GameOverlay.inGameMenu,
           child: AlertDialog(
-            elevation: 18,
             title: Center(child: Text('Menu')),
             actionsAlignment: MainAxisAlignment.center,
             content: Column(

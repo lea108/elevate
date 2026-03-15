@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:elevate/game.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
-import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/theme/palette.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +79,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
 
   List<Widget> buildContent(BuildContext context, TutorialStage stage) {
     switch (stage) {
-      case TutorialStage.elevators1:
+      case TutorialStage.elevators1Controls:
         return [
           Text(
             title1,
@@ -89,17 +88,24 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           ),
           SizedBox(height: mediumPadding),
           Text(bodyText1),
-          Image.asset('assets/images/gamepad_elevator.png'),
+          SizedBox(height: 8),
+          AspectRatio(
+            aspectRatio: 2,
+            child: Image.asset(
+              'assets/images/gamepad_elevator.png',
+            ),
+          ),
+          SizedBox(height: 10),
           Text(
-            'The game also works with keyboard using W-S or arrow up/down keys',
+            'The game also works with keyboard using W-S or arrow up/down keys.',
           ),
           Image.asset('assets/images/keys.png'),
           SizedBox(height: 30),
           Text('Objective:'),
           Text('Transport a person to the upper floor'),
-          buildSkipButton(context, .elevators2),
+          buildSkipButton(context, .elevators2Transport10),
         ];
-      case TutorialStage.elevators2:
+      case TutorialStage.elevators2Transport10:
         return [
           Text(
             title2,
@@ -112,15 +118,14 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           SizedBox(height: 30),
           Text('Objective:'),
           Text('Transport 10 people up or down.'),
-          Text('\nProgress:'),
           SizedBox(height: 4),
           ..._progress(
             widget.game.gameState.tutorialState.transportedObjectiveProgress(),
             10,
           ),
-          buildSkipButton(context, .elevators3),
+          buildSkipButton(context, .elevators4Destinations),
         ];
-      case TutorialStage.elevators3:
+      case TutorialStage.elevators3TechTree:
         return [
           Text(
             title3,
@@ -131,14 +136,10 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           Text(bodyText3),
           SizedBox(height: 30),
           Text('Objective:'),
-          Text('Transport people to both office floors'),
-          ..._progress(
-            widget.game.gameState.tutorialState.transportedObjectiveProgress(),
-            2,
-          ),
-          buildSkipButton(context, .elevators4),
+          Text('Buy a tech upgrade'),
+          buildSkipButton(context, .elevators5Late),
         ];
-      case TutorialStage.elevators4:
+      case TutorialStage.elevators4Destinations:
         return [
           Text(
             title4,
@@ -147,6 +148,24 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           ),
           SizedBox(height: mediumPadding),
           Text(bodyText4),
+          SizedBox(height: 30),
+          Text('Objective:'),
+          Text('Transport people to both office floors'),
+          ..._progress(
+            widget.game.gameState.tutorialState.transportedObjectiveProgress(),
+            2,
+          ),
+          buildSkipButton(context, .elevators5Late),
+        ];
+      case TutorialStage.elevators5Late:
+        return [
+          Text(
+            title5,
+            style: TextTheme.of(context).titleMedium,
+            textAlign: .center,
+          ),
+          SizedBox(height: mediumPadding),
+          Text(bodyText5),
           SizedBox(height: 30),
           Text('Objective:'),
           Text('Transport a late or very person up or down.'),
@@ -215,28 +234,36 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
 // dart format off
 const title1 = 'Elevators 🛗';
 const bodyText1 =
-"""Use the left stick on your gamepad to move the elevator up or down.
-""";
+"""Use the left stick on your gamepad to move the elevator up or down.""";
 
 const title2 = 'Move people and be rewarded';
 const bodyText2 =
 """The building economy likes when people get to their offices.
 
-If you are successful at moving people to their destinations, you will be awarded with tech coins (⭐).
-
-You see your current saldo at the top right of the screen. With the ⭐:s you will be able to buy tech upgrades.
+Get people to their destinations and be awarded with tech coins (⭐) and boost building economy.
 """;
 
-
-const title3 = 'Where do people want to go?';
+const title3 = 'Get your reward';
 const bodyText3 =
+"""
+A good first tech upgrade is the Elevator floor indicators.
+
+Gamepad:
+- Press B to open the menu and then use D-pads to select "Tech Tree" and press A
+
+Keyboard:
+- Use your mouse to click the ⭐ in the statusbar to open Tech tree
+""";
+
+const title4 = 'Where do people want to go?';
+const bodyText4 =
 """People travel between "outside" and their office and then back again.
 
 For now your elevator is very basic and does not tell you which floor people want to go off at. But there is an upgrade you can purchase to show this.
 """;
 
-const title4 = 'Don\'t be late ☹️😡';
-const bodyText4 =
+const title5 = 'Don\'t be late ☹️😡';
+const bodyText5 =
 """People don't have the whole day.
 
 People will show in orange when they become late, and in red when they are very late.

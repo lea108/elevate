@@ -16,14 +16,34 @@ ThemeData appTheme() {
   );
   return theme.copyWith(
     visualDensity: VisualDensity.comfortable,
+    dialogTheme: DialogThemeData(
+      //backgroundColor: Palette.c1,
+      elevation: 20,
+      shadowColor: Colors.black87,
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Palette.c2),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(
+        backgroundColor: WidgetStatePropertyAll(Palette.tutorialCardBg),
+        foregroundColor: WidgetStatePropertyAll(Colors.white),
+        shape: WidgetStateProperty.resolveWith((state) {
+          return RoundedRectangleBorder(
             borderRadius: BorderRadiusGeometry.circular(mediumPadding),
-          ),
-        ),
+            side: state.contains(WidgetState.focused)
+                ? BorderSide(width: 3, color: Colors.orange)
+                : BorderSide(width: 3, color: Colors.transparent),
+          );
+        }),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        shape: WidgetStateProperty.resolveWith((state) {
+          return StadiumBorder(
+            side: state.contains(WidgetState.focused)
+                ? BorderSide(width: 3, color: Colors.orange)
+                : BorderSide.none,
+          );
+        }),
       ),
     ),
   );

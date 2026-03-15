@@ -21,9 +21,9 @@ class TechCard extends StatelessWidget {
   });
 
   Color get backgroundColor {
-    if (activated) return Palette.c1;
-    if (!canActivate) return Palette.c1;
-    return selected ? Palette.c2 : Palette.c3;
+    if (activated) return Palette.c4;
+    if (!canActivate) return Palette.c4;
+    return selected ? Palette.tutorialCardBg : Palette.tutorialCardBg;
   }
 
   Color get foregroundColor {
@@ -32,7 +32,7 @@ class TechCard extends StatelessWidget {
   }
 
   double get elevation {
-    if (!canActivate) return 0;
+    if (!canActivate || activated) return 1;
     return selected ? 6 : 4;
   }
 
@@ -61,6 +61,18 @@ class TechCard extends StatelessWidget {
                 padding: WidgetStatePropertyAll(
                   EdgeInsetsGeometry.all(mediumPadding * 2),
                 ),
+                side: WidgetStateBorderSide.resolveWith((state) {
+                  if (state.contains(WidgetState.focused)) {
+                    return BorderSide(width: 3, color: Colors.orange);
+                  }
+                  if (selected) {
+                    return BorderSide(
+                      width: 3,
+                      color: Color.lerp(Colors.orange, Colors.white24, 0.6)!,
+                    );
+                  }
+                  return BorderSide(width: 3, color: Colors.transparent);
+                }),
               ),
               onPressed: canActivate ? onPressed : null,
               child: Column(
@@ -73,7 +85,12 @@ class TechCard extends StatelessWidget {
                   SizedBox(
                     height: 50,
                     width: 50,
-                    child: Image.asset('assets/images/${data.spriteName}'),
+                    child: ImageFiltered(
+                      imageFilter: ColorFilter.saturation(
+                        activated || canActivate ? 1.0 : 0.3,
+                      ),
+                      child: Image.asset('assets/images/${data.spriteName}'),
+                    ),
                   ),
                   SizedBox(height: mediumPadding),
                   Text(

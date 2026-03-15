@@ -170,10 +170,13 @@ class AgentsState {
     // Update lateness
     for (var a in agents) {
       a.lateness = switch (tutorial.stage) {
-        TutorialStage.elevators1 => AgentLateness.neutral,
-        TutorialStage.elevators2 => AgentLateness.neutral,
-        TutorialStage.elevators3 => AgentLateness.neutral,
-        TutorialStage.elevators4 => a.getAgentLateness(time.t, fastLate: true),
+        TutorialStage.elevators1Controls => AgentLateness.neutral,
+        TutorialStage.elevators2Transport10 => AgentLateness.neutral,
+        TutorialStage.elevators4Destinations => AgentLateness.neutral,
+        TutorialStage.elevators5Late => a.getAgentLateness(
+          time.t,
+          fastLate: true,
+        ),
         _ => a.getAgentLateness(time.t),
       };
     }

@@ -20,6 +20,9 @@ class TechTreeOverlay extends StatefulWidget {
 
 class _TechTreeOverlayState extends State<TechTreeOverlay> {
   TechId? selected;
+  DateTime? lastGamepadActivate;
+  static final _purchaseFocusNode = FocusNode();
+  String? error;
 
   TechData? get selectedData => selected != null
       ? widget.game.gameState.techTreeState.resolveTechData(selected!)
@@ -36,6 +39,9 @@ class _TechTreeOverlayState extends State<TechTreeOverlay> {
       child: OverlayGamepadControl(
         game: widget.game,
         overlay: GameOverlay.techTree,
+        beforeActivate: () {
+          lastGamepadActivate = DateTime.now();
+        },
         child: ListenableBuilder(
           listenable: techTree,
           builder: (context, child) {
@@ -76,7 +82,15 @@ class _TechTreeOverlayState extends State<TechTreeOverlay> {
                                     onPressed: () {
                                       setState(() {
                                         selected = t.id;
+                                        error = null;
                                       });
+                                      // If selected by gamepad, autofocus the Purchase button
+                                      if (lastGamepadActivate != null &&
+                                          lastGamepadActivate!
+                                              .add(Duration(milliseconds: 100))
+                                              .isAfter(DateTime.now())) {
+                                        _purchaseFocusNode.requestFocus();
+                                      }
                                     },
                                   ),
                                 )
@@ -86,28 +100,33 @@ class _TechTreeOverlayState extends State<TechTreeOverlay> {
                       ),
                     ),
                     SizedBox(height: mediumPadding * 2),
-                    Row(
-                      children: [
-                        Text(
-                          'Tech coins (⭐) saldo: ${progress.techCoins}',
-                          style: TextTheme.of(context).titleMedium,
-                        ),
-                        if (selected != null) ...[
-                          SizedBox(width: 20),
-                          Text(
-                            'To pay: ${selectedData?.cost}',
-                            style: TextTheme.of(context).titleMedium,
-                          ),
-                        ],
-                      ],
+                    Text(
+                      'Selected: ${selectedData?.name ?? 'none'}',
+                      style: TextTheme.of(context).titleMedium,
                     ),
+                    Text(
+                      'Tech coins saldo: ${progress.techCoins} ⭐',
+                      style: TextTheme.of(context).titleMedium,
+                    ),
+                    if (error != null)
+                      Text(
+                        error!,
+                        style:
+                            TextTheme.of(
+                              context,
+                            ).titleMedium!.copyWith(
+                              color: Colors.red[700],
+                              fontWeight: .bold,
+                            ),
+                      ),
                   ],
                 ),
               ),
               actions: [
                 TextButton(
+                  focusNode: _purchaseFocusNode,
                   onPressed: selected != null ? purchaseSelected : null,
-                  child: Text('Purchase'),
+                  child: Text('Pay ${selectedData?.cost ?? 0} ⭐'),
                 ),
                 TextButton(onPressed: close, child: Text('Close')),
               ],
@@ -127,20 +146,23 @@ class _TechTreeOverlayState extends State<TechTreeOverlay> {
     final progress = widget.game.gameState.progressionState;
     final elevator = widget.game.gameState.elevatorState;
     final agents = widget.game.gameState.agentsState;
+    final tutorial = widget.game.gameState.tutorialState;
 
-    final result = techTree.activateTech(selected!, progress, elevator, agents);
+    final result = techTree.activateTech(
+      selected!,
+      progress,
+      elevator,
+      agents,
+      tutorial,
+    );
     if (result.success) {
       setState(() {
         selected = null;
       });
     } else {
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text('Error'),
-          content: Text(result.errorStr ?? ''),
-        ),
-      );
+      setState(() {
+        error = result.errorStr ?? 'Error';
+      });
     }
   }
 

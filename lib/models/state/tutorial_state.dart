@@ -1,25 +1,24 @@
 import 'package:elevate/models/agent.dart';
+import 'package:elevate/models/state/tech_tree_state.dart';
 import 'package:flutter/foundation.dart';
 
 enum TutorialStage {
-  elevators1(1),
-  elevators2(2),
-  elevators3(3),
-  elevators4(4),
-  finalNotes(99),
-  done(100)
+  elevators1Controls,
+  elevators2Transport10,
+  elevators3TechTree,
+  elevators4Destinations,
+  elevators5Late,
+  finalNotes,
+  done
   ;
-
-  const TutorialStage(this.value);
-
-  final int value;
 
   TutorialStage? get next {
     return switch (this) {
-      TutorialStage.elevators1 => TutorialStage.elevators2,
-      TutorialStage.elevators2 => TutorialStage.elevators3,
-      TutorialStage.elevators3 => TutorialStage.elevators4,
-      TutorialStage.elevators4 => TutorialStage.finalNotes,
+      TutorialStage.elevators1Controls => TutorialStage.elevators2Transport10,
+      TutorialStage.elevators2Transport10 => TutorialStage.elevators3TechTree,
+      TutorialStage.elevators3TechTree => TutorialStage.elevators4Destinations,
+      TutorialStage.elevators4Destinations => TutorialStage.elevators5Late,
+      TutorialStage.elevators5Late => TutorialStage.finalNotes,
       TutorialStage.finalNotes => TutorialStage.done,
       TutorialStage.done => null,
     };
@@ -35,7 +34,7 @@ class TutorialState extends ChangeNotifier {
   }
 
   reset() {
-    _stage = .elevators1;
+    _stage = .elevators1Controls;
     _counter = 0;
   }
 
@@ -48,29 +47,29 @@ class TutorialState extends ChangeNotifier {
   }
 
   void recordTransported(AgentLateness lateness, int targetLvl) {
-    if (_stage == .elevators1) {
-      _stage = .elevators2;
+    if (_stage == .elevators1Controls) {
+      _stage = .elevators2Transport10;
       _counter = 0;
       notifyListeners();
-    } else if (_stage == .elevators2) {
+    } else if (_stage == .elevators2Transport10) {
       _counter += 1;
       if (_counter >= 10) {
-        _stage = .elevators3;
+        _stage = .elevators3TechTree;
         _counter = 0;
       }
       // Has progress info => notify on each recorded transport
       notifyListeners();
-    } else if (_stage == .elevators3) {
+    } else if (_stage == .elevators4Destinations) {
       if (targetLvl >= 1 && targetLvl <= 2) {
         _counter = _counter | targetLvl;
         if (_counter == (1 | 2)) {
-          _stage = .elevators4;
+          _stage = .elevators5Late;
           _counter = 0;
         }
         // Has progress info => notify on each recorded transport
         notifyListeners();
       }
-    } else if (_stage == .elevators4) {
+    } else if (_stage == .elevators5Late) {
       if (lateness != .neutral) {
         _stage = .finalNotes;
         _counter = 0;
@@ -79,10 +78,17 @@ class TutorialState extends ChangeNotifier {
     }
   }
 
+  void recordTechUpgrade(TechId id) {
+    if (_stage == .elevators3TechTree) {
+      _stage = .elevators4Destinations;
+      notifyListeners();
+    }
+  }
+
   int transportedObjectiveProgress() {
-    if (_stage == .elevators2) {
+    if (_stage == .elevators2Transport10) {
       return _counter;
-    } else if (_stage == .elevators3) {
+    } else if (_stage == .elevators4Destinations) {
       int n = 0;
       n += (_counter & 1) != 0 ? 1 : 0;
       n += (_counter & 2) != 0 ? 1 : 0;

@@ -101,9 +101,9 @@ class GameStatusbarOverlay extends StatelessWidget {
         final transported =
             base +
             ([
-                  TutorialStage.elevators1,
-                  TutorialStage.elevators2,
-                  TutorialStage.elevators3,
+                  TutorialStage.elevators1Controls,
+                  TutorialStage.elevators2Transport10,
+                  TutorialStage.elevators4Destinations,
                 ].contains(game.gameState.tutorialState.stage)
                 ? ''
                 : late);

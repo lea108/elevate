@@ -87,7 +87,7 @@ class GameState {
       }
     }
     if (tutorialState.stage != lastTutorialStage) {
-      if (tutorialState.stage == .elevators3) {
+      if (tutorialState.stage == .elevators4Destinations) {
         // After tutorial stage 2 was accomplished, find tenants
         // for the "for rent" offices.
         buildingState.tutorialRentOutUnrentedOffices();

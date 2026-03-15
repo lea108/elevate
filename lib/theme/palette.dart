@@ -18,6 +18,7 @@ class Palette {
     Colors.black,
     0.75,
   )!;
+  static final c4 = Color.fromARGB(255, 81, 73, 71);
 
-  static final tutorialCardBg = Colors.brown[800];
+  static final tutorialCardBg = Colors.brown[800]!;
 }

@@ -3,6 +3,7 @@ import 'package:elevate/models/action_result.dart';
 import 'package:elevate/models/state/agents_state.dart';
 import 'package:elevate/models/state/elevator_state.dart';
 import 'package:elevate/models/state/progression_state.dart';
+import 'package:elevate/models/state/tutorial_state.dart';
 import 'package:flutter/foundation.dart';
 
 enum TechId {
@@ -62,7 +63,7 @@ class TechTreeState extends ChangeNotifier {
   void reset() {
     techCatalog.addAll([
       [
-        TechData(TechId.inElevatorCarButtons,'In-elevator buttons', 'tech_in_elevator_buttons.png', 2, 'Add floor level buttons in the elevator so people can indicate which level they want to go to.'),
+        TechData(TechId.inElevatorCarButtons,'In-elevator buttons', 'tech_in_elevator_buttons.png', 1, 'Add floor level buttons in the elevator so people can indicate which level they want to go to.'),
        // TechData(TechId.elevatorMusic,'Elevator music', 'tech_music.png', 2, 'Play music in the elevator to make people slower get late while in the elevator')
         TechData(TechId.levelUpDownButtons,'Up/down buttons', 'tech_up_down_buttons.png', 1, 'Add buttons on each floor to call the elevator and indicate if you want to go up or down.')
       ],
@@ -72,7 +73,7 @@ class TechTreeState extends ChangeNotifier {
         TechData(TechId.capacity4,'XL elevator', 'tech_capacity4.png', 20, 'Increase elevator car capacity to $_capacity4 ppl'),
       ],
       [
-        TechData(TechId.snapSpeed2, 'Snap-2', 'tech_snap2.png', 1, 'Quicker snap to current level when you stop the elevator a bit off'),
+        TechData(TechId.snapSpeed2, 'Snap-2', 'tech_snap2.png', 2, 'Quicker snap to current level when you stop the elevator a bit off'),
         TechData(TechId.snapSpeed3, 'Snap-3', 'tech_snap3.png', 4, 'Even stronger snap to current level when you stop the elevator a bit off'),
         //TechData(TechId.gotoFloor, 'GoTo-Floor 3000', 'tech_goto.png', 4, 'Upgrade elevator control so you can tell which floor to goto and it will obey your orders.'),
       ],
@@ -123,6 +124,7 @@ class TechTreeState extends ChangeNotifier {
     ProgressionState progress,
     ElevatorState elevator,
     AgentsState agents,
+    TutorialState tutorial,
   ) {
     final techLane = techCatalog.firstWhereOrNull(
       (l) => l.firstWhereOrNull((t) => t.id == id) != null,
@@ -151,6 +153,7 @@ class TechTreeState extends ChangeNotifier {
     if (installResult.success) {
       progress.techCoins -= tech.cost;
       activated.add(id);
+      tutorial.recordTechUpgrade(id);
     }
     return installResult;
   }

@@ -16,7 +16,7 @@ class GameConsts {
   static const double officeHoursEndTo = 18 * 3600;
 
   static const double lateMinTime = 45 * 60;
-  static const double veryLateMinTime = 90 * 60;
+  static const double veryLateMinTime = 105 * 60;
 
   static const double indicatorOffOpacity = 0.0;
 

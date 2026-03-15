@@ -177,7 +177,6 @@ class ElevatorCar extends RectangleComponent
     const snapVelocity = 0.02;
     const userAccel = 0.1;
     final (snapAccel, snapDecel) = _snapAccelDecel;
-    const derivate = 00.1;
 
     // User control
     double userDy = clampDouble(inputY * -0.1, -maxVelocity, maxVelocity);

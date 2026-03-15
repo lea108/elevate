@@ -1,0 +1,5 @@
+
+enum GameScene {
+  intro,
+  building;
+}

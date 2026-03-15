@@ -16,19 +16,19 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
   Room(this.floor, this.roomIndex, this.roomData, this.addRoof);
 
   final Paint roofPaint = Paint()
-    ..color = Colors.black
+    ..color = Colors.black87
     ..strokeWidth = 2
     ..style = PaintingStyle.stroke;
 
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load(roomData.roomDef.spriteName);
-    bleed = 1.0;
+    bleed = 0.9;
 
     _overlay = RectangleComponent()
-      ..position = Vector2(-bleed!, -bleed!)
-      ..size = size + Vector2(bleed! * 2, bleed! * 2);
-    await add(_overlay);
+      ..position = Vector2(-bleed!, 0)
+      ..size = size + Vector2(bleed! * 2, 0);
+    await addAll([_overlay]);
 
     return super.onLoad();
   }
@@ -52,10 +52,12 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    canvas.drawLine(
-      Offset(-bleed!, -1),
-      Offset(size.x + bleed!, -1),
-      roofPaint,
-    );
+    if (addRoof) {
+      canvas.drawLine(
+        Offset(-bleed!, -1),
+        Offset(size.x + bleed!, -1),
+        roofPaint,
+      );
+    }
   }
 }

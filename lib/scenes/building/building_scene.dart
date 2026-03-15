@@ -40,7 +40,10 @@ class BuildingScene extends World
     );
     final es = game.gameState.elevatorState;
 
-    final elevatorTopSize = Vector2(xScale * GameConsts.elevatorShaftW, yScale);
+    final elevatorTopSize = Vector2(
+      xScale * GameConsts.elevatorShaftW,
+      yScale * 0.9,
+    );
 
     _sky = Sky()..size = worldSize;
     _ground = Ground()

@@ -13,6 +13,7 @@
    inkscape:export-batch-path="..\images"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -26,8 +27,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      inkscape:zoom="4.4598915"
-     inkscape:cx="64.575562"
-     inkscape:cy="-3.4754209"
+     inkscape:cx="78.925687"
+     inkscape:cy="28.139698"
      inkscape:window-width="1920"
      inkscape:window-height="1057"
      inkscape:window-x="-8"
@@ -59,9 +60,41 @@
        margin="0"
        bleed="0"
        inkscape:label="elevator_full" />
+    <inkscape:page
+       x="35.875"
+       y="0"
+       width="13.229166"
+       height="13.229167"
+       id="page12"
+       margin="0"
+       bleed="0"
+       inkscape:label="elevator_lamp" />
   </sodipodi:namedview>
   <defs
-     id="defs1" />
+     id="defs1">
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient58"
+       id="linearGradient82"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.1039319,0,0,1.3890955,-556.16202,-157.89405)"
+       x1="542.79321"
+       y1="113.54483"
+       x2="542.79321"
+       y2="120.30788" />
+    <linearGradient
+       id="linearGradient58"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#e4e4b5;stop-opacity:0.31953642;"
+         offset="0"
+         id="stop57" />
+      <stop
+         style="stop-color:#f1f1de;stop-opacity:0;"
+         offset="1"
+         id="stop58" />
+    </linearGradient>
+  </defs>
   <g
      inkscape:label="Lager 1"
      inkscape:groupmode="layer"
@@ -141,5 +174,10 @@
          style="fill:#ffffff;fill-opacity:1;stroke-width:0.0726141px;stroke:none"
          x="19.227867"
          y="7.5304117">FULL</tspan></text>
+    <path
+       style="opacity:0.446352;fill:url(#linearGradient82);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.327643px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 40.413661,0 -4.53866,8.900088 H 49.104168 L 44.711044,0 Z"
+       id="path82"
+       sodipodi:nodetypes="ccccc" />
   </g>
 </svg>

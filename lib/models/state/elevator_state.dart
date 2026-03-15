@@ -35,7 +35,7 @@ class ElevatorState {
 
   void reset() {
     elevatorCarY = 0.0;
-    elevatorMinFloor = -2;
+    elevatorMinFloor = -1;
     elevatorMaxFloor = 2;
     capacity = 5;
     doorsOpen = false;

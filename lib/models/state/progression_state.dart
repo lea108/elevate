@@ -114,4 +114,9 @@ class ProgressionState extends ChangeNotifier {
             2 -
         1;
   }
+
+  void tutorialEnsureAtLeastOneTechCoin() {
+    techCoins = max(1, techCoins);
+    notifyListeners();
+  }
 }

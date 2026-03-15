@@ -87,8 +87,22 @@ class GameState {
       }
     }
     if (tutorialState.stage != lastTutorialStage) {
+      if (tutorialState.stage == .elevators3TechTree) {
+        progressionState.tutorialEnsureAtLeastOneTechCoin();
+      }
       if (tutorialState.stage == .elevators4Destinations) {
-        // After tutorial stage 2 was accomplished, find tenants
+        // Get the upgrade even if user skipped
+        if (!techTreeState.activated.contains(TechId.inElevatorCarButtons)) {
+          progressionState.tutorialEnsureAtLeastOneTechCoin();
+          techTreeState.activateTech(
+            TechId.inElevatorCarButtons,
+            progressionState,
+            elevatorState,
+            agentsState,
+            tutorialState,
+          );
+        }
+        // After tutorial stage 3 was accomplished, find tenants
         // for the "for rent" offices.
         buildingState.tutorialRentOutUnrentedOffices();
         agentsState.createAgents(buildingState, timeState);

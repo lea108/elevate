@@ -137,16 +137,20 @@ class GameStatusbarOverlay extends StatelessWidget {
             onPressed: () {
               game.overlays.add(GameOverlay.inGameMenu.name);
             },
-            child: Row(
-              children: [
-                Icon(
-                  paused
-                      ? Icons.pause
-                      : (fastForward ? Icons.fast_forward : Icons.play_arrow),
-                  size: 20,
-                ),
-                Text(timeText),
-              ],
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: 100),
+              child: Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  Icon(
+                    paused
+                        ? Icons.pause
+                        : (fastForward ? Icons.fast_forward : Icons.play_arrow),
+                    size: 20,
+                  ),
+                  Text(timeText),
+                ],
+              ),
             ),
           ),
         );

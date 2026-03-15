@@ -19,6 +19,11 @@ class Palette {
     0.75,
   )!;
   static final c4 = Color.fromARGB(255, 81, 73, 71);
+  static final selectedTechBorder = Color.lerp(
+    Colors.orange,
+    Colors.white60,
+    0.6,
+  )!;
 
   static final tutorialCardBg = Colors.brown[800]!;
 }

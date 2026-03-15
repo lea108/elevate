@@ -45,10 +45,10 @@ class SettingsOverlay extends StatelessWidget {
                       label: 'Elevator 1 up/down',
                       setting: settings.gamepadElevator1UpDownAxis,
                     ),
-                    GamepadAxisSetting(
-                      label: 'Elevator 2 up/down',
-                      setting: settings.gamepadElevator2UpDownAxis,
-                    ),
+                    //GamepadAxisSetting(
+                    //  label: 'Elevator 2 up/down',
+                    //  setting: settings.gamepadElevator2UpDownAxis,
+                    //),
                     GamepadButtonSetting(
                       label: 'Activate (A)',
                       setting: settings.gamepadActivateButton,

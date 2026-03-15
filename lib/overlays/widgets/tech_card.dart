@@ -68,7 +68,7 @@ class TechCard extends StatelessWidget {
                   if (selected) {
                     return BorderSide(
                       width: 3,
-                      color: Color.lerp(Colors.orange, Colors.white24, 0.6)!,
+                      color: Palette.selectedTechBorder,
                     );
                   }
                   return BorderSide(width: 3, color: Colors.transparent);

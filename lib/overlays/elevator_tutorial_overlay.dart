@@ -103,7 +103,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           SizedBox(height: 30),
           Text('Objective:'),
           Text('Transport a person to the upper floor'),
-          buildSkipButton(context, .elevators2Transport10),
+          buildSkipButton(context),
         ];
       case TutorialStage.elevators2Transport10:
         return [
@@ -123,7 +123,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
             widget.game.gameState.tutorialState.transportedObjectiveProgress(),
             10,
           ),
-          buildSkipButton(context, .elevators4Destinations),
+          buildSkipButton(context),
         ];
       case TutorialStage.elevators3TechTree:
         return [
@@ -137,7 +137,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           SizedBox(height: 30),
           Text('Objective:'),
           Text('Buy a tech upgrade'),
-          buildSkipButton(context, .elevators5Late),
+          buildSkipButton(context),
         ];
       case TutorialStage.elevators4Destinations:
         return [
@@ -155,7 +155,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
             widget.game.gameState.tutorialState.transportedObjectiveProgress(),
             2,
           ),
-          buildSkipButton(context, .elevators5Late),
+          buildSkipButton(context),
         ];
       case TutorialStage.elevators5Late:
         return [
@@ -169,7 +169,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           SizedBox(height: 30),
           Text('Objective:'),
           Text('Transport a late or very person up or down.'),
-          buildSkipButton(context, .finalNotes),
+          buildSkipButton(context),
         ];
       case TutorialStage.finalNotes:
         return [
@@ -180,7 +180,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           ),
           SizedBox(height: mediumPadding),
           Text(finalNotes),
-          buildSkipButton(context, .done, text: 'Close'),
+          buildSkipButton(context, text: 'Close'),
         ];
       case TutorialStage.done:
         return [];
@@ -188,8 +188,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
   }
 
   Widget buildSkipButton(
-    BuildContext context,
-    TutorialStage skipTo, {
+    BuildContext context, {
     String text = 'Skip',
   }) {
     return Padding(
@@ -199,7 +198,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           backgroundColor: WidgetStatePropertyAll(Palette.c1),
           foregroundColor: WidgetStatePropertyAll(Colors.white70),
         ),
-        onPressed: () => skip(skipTo),
+        onPressed: () => skip(),
         child: Text(text),
       ),
     );
@@ -270,8 +269,6 @@ People will show in orange when they become late, and in red when they are very 
 
 Late people (☹️) will only give half of normal performance bonus.
 Very late people (😡) gives you a negative performance score.
-
-The score resets every new day though.
 """;
 
 const finalNotes =

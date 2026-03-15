@@ -6,6 +6,7 @@ import 'package:elevate/models/state/tech_tree_state.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/overlays/widgets/overlay_gamepad_control.dart';
 import 'package:elevate/overlays/widgets/tech_card.dart';
+import 'package:elevate/theme/palette.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,10 @@ class _TechTreeOverlayState extends State<TechTreeOverlay> {
                                           lastGamepadActivate!
                                               .add(Duration(milliseconds: 100))
                                               .isAfter(DateTime.now())) {
-                                        _purchaseFocusNode.requestFocus();
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                              _purchaseFocusNode.requestFocus();
+                                            });
                                       }
                                     },
                                   ),
@@ -126,7 +130,14 @@ class _TechTreeOverlayState extends State<TechTreeOverlay> {
                 TextButton(
                   focusNode: _purchaseFocusNode,
                   onPressed: selected != null ? purchaseSelected : null,
-                  child: Text('Pay ${selectedData?.cost ?? 0} ⭐'),
+                  child: Text(
+                    'Pay ${selectedData?.cost ?? 0} ⭐',
+                    style: selected != null
+                        ? Theme.of(
+                            context,
+                          ).textTheme.titleMedium!
+                        : null,
+                  ),
                 ),
                 TextButton(onPressed: close, child: Text('Close')),
               ],

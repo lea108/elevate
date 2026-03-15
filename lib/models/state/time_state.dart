@@ -41,7 +41,7 @@ class TimeState extends ChangeNotifier {
     const debugFF = false;
     bool autoFF = debugFF || t > lastActiveGamePlay + 60;
 
-    return autoFF || timeOfDay > 22 * 3600 || timeOfDay < 6 * 3600;
+    return autoFF; //|| timeOfDay > 22 * 3600 || timeOfDay < 6 * 3600;
   }
 
   double resolveTimeOfDaySpeed() {

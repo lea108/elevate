@@ -26,8 +26,8 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
     bleed = 0.9;
 
     _overlay = RectangleComponent()
-      ..position = Vector2(-bleed!, 0)
-      ..size = size + Vector2(bleed! * 2, 0);
+      ..position = Vector2(-bleed!, -bleed!)
+      ..size = size + Vector2(bleed! * 2, bleed! * 2);
     await addAll([_overlay]);
 
     return super.onLoad();

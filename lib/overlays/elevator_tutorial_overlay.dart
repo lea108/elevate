@@ -274,5 +274,5 @@ Very late people (😡) gives you a negative performance score.
 const finalNotes =
 """You have completed the tutorial.
 
-At the end of each day you will get your daily score and option to buy upgrades. The tech tree is also accessible via the game menu at any time.
+At the end of each day you will get your daily score and an update on how the business is going.
 """;

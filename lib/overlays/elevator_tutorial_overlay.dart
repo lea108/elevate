@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:elevate/game.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
+import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/theme/palette.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -224,6 +225,10 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
 
   void onGamepadEvent(GamepadEvent event) {
     final settings = widget.game.settingsState;
+    if (widget.game.overlays.activeOverlays.lastOrNull !=
+        GameOverlay.elevatorTutorial.name) {
+      return;
+    }
     if (settings.gamepadActivateButton.value.isPressed(event) == true) {
       skip();
     }

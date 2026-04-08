@@ -5,23 +5,26 @@ import 'package:elevate/theme/theme.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 
+enum RoundedCorner {
+  bottomLeft,
+  bottomRight,
+  topLeft,
+  topRight,
+}
+
 class StatusBarSection extends StatelessWidget {
   final MyGame game;
   final Widget child;
   final EdgeInsets? padding;
-  final bool roundBottomLeft;
-  final bool roundBottomRight;
-  final bool roundTopLeft;
-  final bool roundTopRight;
+  final Set<RoundedCorner> roundedCorner;
+  final bool useSkyColor;
   final bool gapRight;
   const StatusBarSection({
     required this.game,
     this.padding,
     this.gapRight = false,
-    this.roundBottomLeft = false,
-    this.roundBottomRight = false,
-    this.roundTopLeft = false,
-    this.roundTopRight = false,
+    this.useSkyColor = true,
+    this.roundedCorner = const {},
     required this.child,
     super.key,
   });
@@ -35,7 +38,7 @@ class StatusBarSection extends StatelessWidget {
       padding: gapRight ? EdgeInsets.only(right: gapSize) : EdgeInsets.zero,
       child: Builder(
         builder: (context) {
-          if (roundBottomLeft || roundBottomRight) {
+          if (useSkyColor) {
             return ListenableBuilder(
               listenable: game.gameState.timeState,
               builder: (context, child) {
@@ -57,10 +60,10 @@ class StatusBarSection extends StatelessWidget {
       padding: padding ?? EdgeInsets.all(mediumPadding),
       decoration: boxDecoration(
         skyColor,
-        roundBottomLeft: roundBottomLeft,
-        roundBottomRight: roundBottomRight,
-        roundTopLeft: roundTopLeft,
-        roundTopRight: roundTopRight,
+        roundBottomLeft: roundedCorner.contains(RoundedCorner.bottomLeft),
+        roundBottomRight: roundedCorner.contains(RoundedCorner.bottomRight),
+        roundTopLeft: roundedCorner.contains(RoundedCorner.topLeft),
+        roundTopRight: roundedCorner.contains(RoundedCorner.topRight),
       ),
       child: child,
     );

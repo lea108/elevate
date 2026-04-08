@@ -20,6 +20,9 @@ ThemeData appTheme() {
       //backgroundColor: Palette.c1,
       elevation: 20,
       shadowColor: Colors.black87,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusGeometry.circular(15),
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(

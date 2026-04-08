@@ -1,11 +1,11 @@
 import 'package:elevate/game.dart';
-import 'package:elevate/models/state/time_state.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/overlays/widgets/status_bar_section.dart';
 import 'package:elevate/theme/responsive_layout.dart';
 import 'package:elevate/utils/format.dart';
 import 'package:elevate/theme/theme.dart';
+import 'package:elevate/utils/sky_color.dart';
 import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -17,51 +17,147 @@ class GameStatusbarOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool narrow = narrowLayout(context);
+    final insets = MediaQuery.viewPaddingOf(context);
 
     if (narrow) {
-      return Column(
-        children: [
-          Row(
-            children: [
-              Spacer(),
-              _elevatorStatus(context),
-              _transportedStatus(context, topRight: true),
-            ],
-          ),
-          Spacer(),
-          Row(
-            children: [
-              _timeStatus(context, bottomLeft: true),
-              _techStatus(context, placementBottom: true),
-              Spacer(),
-            ],
-          ),
-        ],
+      return SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            _sysStatusBarBackground(context, insets),
+            Row(
+              children: [
+                Spacer(),
+                _elevatorStatus(
+                  context,
+                  roundedCorner: {
+                    RoundedCorner.bottomLeft,
+                    RoundedCorner.bottomRight,
+                  },
+                ),
+                _transportedStatus(
+                  context,
+                  gapRight: false,
+                  roundedCorner: {
+                    RoundedCorner.bottomLeft,
+                  },
+                ),
+              ],
+            ),
+            Spacer(),
+            Row(
+              children: [
+                _timeStatus(
+                  context,
+                  placementTop: false,
+                  gapRight: true,
+                  roundedCorner: {
+                    RoundedCorner.topRight,
+                    if (insets.bottom > 0.1) ...[
+                      RoundedCorner.bottomRight,
+                    ],
+                  },
+                ),
+                _techStatus(
+                  context,
+                  placementTop: false,
+                  roundedCorner: {
+                    RoundedCorner.topLeft,
+                    RoundedCorner.topRight,
+                    if (insets.bottom > 0.1) ...[
+                      RoundedCorner.bottomLeft,
+                      RoundedCorner.bottomRight,
+                    ],
+                  },
+                ),
+                Spacer(),
+              ],
+            ),
+          ],
+        ),
       );
     }
 
     return Align(
       alignment: .topRight,
-      child: Row(
-        children: [
-          _menu(context, topLeft: true),
-          Spacer(),
-          _techStatus(context, placementTop: true),
-          _elevatorStatus(context),
-          _transportedStatus(context),
-          _timeStatus(context, topRight: true),
-        ],
+      child: SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            _sysStatusBarBackground(context, insets),
+            Row(
+              children: [
+                _menu(
+                  context,
+                  roundedCorner: {
+                    RoundedCorner.bottomRight,
+                  },
+                ),
+                Spacer(),
+                _techStatus(
+                  context,
+                  placementTop: true,
+                  roundedCorner: {
+                    RoundedCorner.bottomLeft,
+                    RoundedCorner.bottomRight,
+                  },
+                ),
+                _elevatorStatus(
+                  context,
+                  roundedCorner: {
+                    RoundedCorner.bottomLeft,
+                    RoundedCorner.bottomRight,
+                  },
+                ),
+                _transportedStatus(
+                  context,
+                  roundedCorner: {
+                    RoundedCorner.bottomLeft,
+                    RoundedCorner.bottomRight,
+                  },
+                ),
+                _timeStatus(
+                  context,
+                  placementTop: true,
+                  roundedCorner: {
+                    RoundedCorner.bottomLeft,
+                  },
+                ),
+              ],
+            ),
+            Spacer(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _menu(BuildContext context, {bool topLeft = true}) {
+  Widget _sysStatusBarBackground(BuildContext context, EdgeInsets insets) {
+    return SizedBox(
+      height: insets.top > 0.1 ? insets.top + 4 : 0,
+      child: ListenableBuilder(
+        listenable: game.gameState.timeState,
+        builder: (context, child) {
+          return Container(
+            color: resolveSkyColor(
+              game.gameState.timeState.timeOfDay,
+            ).darken(0.6),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _menu(
+    BuildContext context, {
+    Set<RoundedCorner> roundedCorner = const {},
+  }) {
     return StatusBarSection(
       game: game,
       padding: EdgeInsets.zero,
-      roundBottomRight: topLeft,
+      roundedCorner: roundedCorner,
       child: _Button(
-        roundBottomRight: topLeft,
+        roundedCorner: roundedCorner,
         onPressed: () {
           game.overlays.add(GameOverlay.inGameMenu.name);
         },
@@ -73,7 +169,7 @@ class GameStatusbarOverlay extends StatelessWidget {
   Widget _techStatus(
     BuildContext context, {
     bool placementTop = false,
-    bool placementBottom = false,
+    Set<RoundedCorner> roundedCorner = const {},
   }) {
     return ListenableBuilder(
       listenable: game.gameState.progressionState,
@@ -83,16 +179,11 @@ class GameStatusbarOverlay extends StatelessWidget {
         return StatusBarSection(
           game: game,
           padding: EdgeInsets.zero,
-          roundBottomLeft: placementTop,
-          roundBottomRight: placementTop,
-          roundTopLeft: placementBottom,
-          roundTopRight: placementBottom,
+          roundedCorner: roundedCorner,
+          useSkyColor: placementTop,
           gapRight: true,
           child: _Button(
-            roundBottomLeft: placementTop,
-            roundBottomRight: placementTop,
-            roundTopLeft: placementBottom,
-            roundTopRight: placementBottom,
+            roundedCorner: roundedCorner,
             onPressed: () {
               game.overlays.add(GameOverlay.techTree.name);
             },
@@ -103,7 +194,10 @@ class GameStatusbarOverlay extends StatelessWidget {
     );
   }
 
-  Widget _elevatorStatus(BuildContext context) {
+  Widget _elevatorStatus(
+    BuildContext context, {
+    Set<RoundedCorner> roundedCorner = const {},
+  }) {
     return ListenableBuilder(
       listenable: game.gameState.timeState,
       builder: (context, _) {
@@ -114,8 +208,8 @@ class GameStatusbarOverlay extends StatelessWidget {
         return StatusBarSection(
           key: Key(text),
           game: game,
-          roundBottomLeft: true,
-          roundBottomRight: true,
+          useSkyColor: true,
+          roundedCorner: roundedCorner,
           gapRight: true,
           child: Text(text),
         );
@@ -123,7 +217,11 @@ class GameStatusbarOverlay extends StatelessWidget {
     );
   }
 
-  Widget _transportedStatus(BuildContext context, {bool topRight = false}) {
+  Widget _transportedStatus(
+    BuildContext context, {
+    bool gapRight = true,
+    Set<RoundedCorner> roundedCorner = const {},
+  }) {
     return ListenableBuilder(
       listenable: game.gameState.progressionState,
       builder: (context, _) {
@@ -143,9 +241,9 @@ class GameStatusbarOverlay extends StatelessWidget {
                 : late);
         return StatusBarSection(
           game: game,
-          roundBottomLeft: true,
-          roundBottomRight: !topRight,
-          gapRight: !topRight,
+          useSkyColor: true,
+          roundedCorner: roundedCorner,
+          gapRight: gapRight,
           child: Text(transported),
         );
       },
@@ -154,8 +252,9 @@ class GameStatusbarOverlay extends StatelessWidget {
 
   Widget _timeStatus(
     BuildContext context, {
-    bool bottomLeft = false,
-    bool topRight = false,
+    bool gapRight = false,
+    bool placementTop = false,
+    Set<RoundedCorner> roundedCorner = const {},
   }) {
     return ListenableBuilder(
       listenable: game.gameState.timeState,
@@ -168,13 +267,12 @@ class GameStatusbarOverlay extends StatelessWidget {
 
         return StatusBarSection(
           game: game,
-          roundBottomLeft: topRight,
-          roundTopRight: bottomLeft,
+          useSkyColor: placementTop,
+          roundedCorner: roundedCorner,
           padding: EdgeInsets.zero,
-          gapRight: !topRight,
+          gapRight: gapRight,
           child: _Button(
-            roundBottomLeft: topRight,
-            roundTopRight: bottomLeft,
+            roundedCorner: roundedCorner,
             onPressed: () {
               game.overlays.add(GameOverlay.inGameMenu.name);
             },
@@ -226,19 +324,13 @@ class GameStatusbarOverlay extends StatelessWidget {
 
 class _Button extends StatelessWidget {
   final Widget child;
-  final bool roundBottomLeft;
-  final bool roundBottomRight;
-  final bool roundTopLeft;
-  final bool roundTopRight;
+  final Set<RoundedCorner> roundedCorner;
   final void Function() onPressed;
 
   const _Button({
     super.key,
     required this.onPressed,
-    this.roundBottomLeft = false,
-    this.roundBottomRight = false,
-    this.roundTopLeft = false,
-    this.roundTopRight = false,
+    this.roundedCorner = const {},
     required this.child,
   });
 
@@ -254,16 +346,16 @@ class _Button extends StatelessWidget {
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(
             borderRadius: BorderRadiusGeometry.only(
-              bottomLeft: roundBottomLeft
+              bottomLeft: roundedCorner.contains(RoundedCorner.bottomLeft)
                   ? Radius.circular(mediumPadding)
                   : Radius.zero,
-              bottomRight: roundBottomRight
+              bottomRight: roundedCorner.contains(RoundedCorner.bottomRight)
                   ? Radius.circular(mediumPadding)
                   : Radius.zero,
-              topLeft: roundTopLeft
+              topLeft: roundedCorner.contains(RoundedCorner.topLeft)
                   ? Radius.circular(mediumPadding)
                   : Radius.zero,
-              topRight: roundTopRight
+              topRight: roundedCorner.contains(RoundedCorner.topRight)
                   ? Radius.circular(mediumPadding)
                   : Radius.zero,
             ),

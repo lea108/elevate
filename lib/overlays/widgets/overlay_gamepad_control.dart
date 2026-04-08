@@ -43,7 +43,7 @@ class _OverlayGamepadControlState extends State<OverlayGamepadControl> {
   @override
   void initState() {
     super.initState();
-    _unsubscribe = Gamepads.events.listen(onGamepadEvent);
+    _unsubscribe = Gamepads.normalizedEvents.listen(onGamepadEvent);
   }
 
   @override
@@ -57,7 +57,7 @@ class _OverlayGamepadControlState extends State<OverlayGamepadControl> {
     return widget.child;
   }
 
-  void onGamepadEvent(GamepadEvent event) {
+  void onGamepadEvent(NormalizedGamepadEvent event) {
     if (widget.enabled == false) {
       return;
     }

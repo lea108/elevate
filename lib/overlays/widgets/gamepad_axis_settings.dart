@@ -29,7 +29,7 @@ class _GamepadAxisSettingState extends State<GamepadAxisSetting> {
       subtitle: edit
           ? Text('Drag the desired stick upwards to record the axis correctly.')
           : Text(
-              '${widget.setting.value.keyName} - ${widget.setting.value.flipAxis ? 'flip' : 'no flip'}',
+              '${widget.setting.value.axis.name} - ${widget.setting.value.flipAxis ? 'flip' : 'no flip'}',
             ),
     );
   }
@@ -48,7 +48,7 @@ class _GamepadAxisSettingState extends State<GamepadAxisSetting> {
 
   void startEdit() {
     setState(() => edit = true);
-    _unsubscribe.add(Gamepads.events.listen(onGamepadEvent));
+    _unsubscribe.add(Gamepads.normalizedEvents.listen(onGamepadEvent));
   }
 
   void stopEdit() {
@@ -58,10 +58,10 @@ class _GamepadAxisSettingState extends State<GamepadAxisSetting> {
     }
   }
 
-  void onGamepadEvent(GamepadEvent event) {
+  void onGamepadEvent(NormalizedGamepadEvent event) {
     // require a high value to not use cross axis false positive
-    if (edit && event.type == .analog && event.value.abs() > 0.7) {
-      widget.setting.value = AxisConfig(event.key, event.value > 0);
+    if (edit && event.axis != null && event.value.abs() > 0.7) {
+      widget.setting.value = AxisConfig(event.axis!, event.value > 0);
       stopEdit();
     }
   }

@@ -25,7 +25,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
   @override
   void initState() {
     super.initState();
-    _unsubscribe = Gamepads.events.listen(onGamepadEvent);
+    _unsubscribe = Gamepads.normalizedEvents.listen(onGamepadEvent);
   }
 
   @override
@@ -247,7 +247,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
     ];
   }
 
-  void onGamepadEvent(GamepadEvent event) {
+  void onGamepadEvent(NormalizedGamepadEvent event) {
     final settings = widget.game.settingsState;
     if (widget.game.overlays.activeOverlays.lastOrNull !=
         GameOverlay.elevatorTutorial.name) {

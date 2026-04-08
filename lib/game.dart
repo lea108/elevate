@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:elevate/models/audio_effects.dart';
 import 'package:elevate/models/game_consts.dart';
@@ -12,7 +11,6 @@ import 'package:elevate/scenes/scenes.dart';
 import 'package:elevate/utils/overlay_manager_extension.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:gamepads/gamepads.dart';
 
 class MyGame extends FlameGame with TapCallbacks, HasKeyboardHandlerComponents {
@@ -29,9 +27,6 @@ class MyGame extends FlameGame with TapCallbacks, HasKeyboardHandlerComponents {
   @override
   Future<void> onLoad() async {
     settingsState = SettingsState();
-    settingsState.applyControlsPreset(
-      kIsWeb ? ControlsPreset.web : ControlsPreset.windows,
-    );
     audioEffects = AudioEffects();
     gameState = GameState(overlays, audioEffects);
     musicComposer = MusicComposer();
@@ -102,11 +97,11 @@ class MyGame extends FlameGame with TapCallbacks, HasKeyboardHandlerComponents {
       scene == GameScene.building,
     );
     overlays.setVisible(
-      GameOverlay.elevatorTutorial.name,
+      GameOverlay.touchControl.name,
       scene == GameScene.building,
     );
     overlays.setVisible(
-      GameOverlay.touchControl.name,
+      GameOverlay.elevatorTutorial.name,
       scene == GameScene.building,
     );
 

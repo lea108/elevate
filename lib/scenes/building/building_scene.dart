@@ -5,7 +5,6 @@ import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/models/projection.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/scenes/building/components/elevator_car.dart';
-import 'package:elevate/scenes/building/components/elevator_indicators.dart';
 import 'package:elevate/scenes/building/components/elevator_shaft.dart';
 import 'package:elevate/scenes/building/components/elevator_shaft_top.dart';
 import 'package:elevate/scenes/building/components/grass.dart';
@@ -121,7 +120,7 @@ class BuildingScene extends World
   }
 
   @override
-  void onGamepadEvent(GamepadEvent event) {
+  void onGamepadEvent(NormalizedGamepadEvent event) {
     if (!game.hasOpenMenu) {
       final escape = game.settingsState.gamepadCancelButton.value.isPressed(
         event,

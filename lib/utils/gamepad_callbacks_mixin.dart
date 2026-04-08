@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flame/components.dart';
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gamepads/gamepads.dart';
 
 mixin GamepadCallbacks on Component {
-  void onGamepadEvent(GamepadEvent event) {}
+  void onGamepadEvent(NormalizedGamepadEvent event) {}
 
   final List<StreamSubscription> _unsubscribe = [];
 
@@ -14,7 +13,7 @@ mixin GamepadCallbacks on Component {
   @mustCallSuper
   void onMount() {
     super.onMount();
-    _unsubscribe.add(Gamepads.events.listen(onGamepadEvent));
+    _unsubscribe.add(Gamepads.normalizedEvents.listen(onGamepadEvent));
   }
 
   @override

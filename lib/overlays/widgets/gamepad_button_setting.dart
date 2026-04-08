@@ -28,7 +28,7 @@ class _GamepadButtonSettingState extends State<GamepadButtonSetting> {
       trailing: buildTrailing(context),
       subtitle: edit
           ? Text('Press the desired button to record it')
-          : Text(widget.setting.value.keyName),
+          : Text(widget.setting.value.button.name),
     );
   }
 
@@ -46,7 +46,7 @@ class _GamepadButtonSettingState extends State<GamepadButtonSetting> {
 
   void startEdit() {
     setState(() => edit = true);
-    _unsubscribe.add(Gamepads.events.listen(onGamepadEvent));
+    _unsubscribe.add(Gamepads.normalizedEvents.listen(onGamepadEvent));
   }
 
   void stopEdit() {
@@ -56,9 +56,9 @@ class _GamepadButtonSettingState extends State<GamepadButtonSetting> {
     }
   }
 
-  void onGamepadEvent(GamepadEvent event) {
-    if (edit && event.type == .button && event.value > 0.5) {
-      widget.setting.value = GamepadButtonConfig(event.key);
+  void onGamepadEvent(NormalizedGamepadEvent event) {
+    if (edit && event.button != null && event.value > 0.5) {
+      widget.setting.value = GamepadButtonConfig(event.button!);
       stopEdit();
     }
   }

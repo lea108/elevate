@@ -40,7 +40,7 @@ class SettingsOverlay extends StatelessWidget {
                       label: 'Music volume',
                       setting: settings.musicVolume,
                     ),
-                    _SectionTitle(child: Text('Controls')),
+                    _SectionTitle(child: Text('Gamepad Controls')),
                     GamepadAxisSetting(
                       label: 'Elevator 1 up/down',
                       setting: settings.gamepadElevator1UpDownAxis,

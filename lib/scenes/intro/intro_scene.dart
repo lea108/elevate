@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:elevate/game.dart';
 import 'package:elevate/scenes/scenes.dart';
 import 'package:elevate/utils/gamepad_callbacks_mixin.dart';
@@ -15,9 +13,8 @@ class IntroScene extends World
         GamepadCallbacks,
         TapCallbacks,
         KeyboardHandler {
-
   @override
-  void onGamepadEvent(GamepadEvent event) {
+  void onGamepadEvent(NormalizedGamepadEvent event) {
     if (event.value > 0) {
       goNext();
     }

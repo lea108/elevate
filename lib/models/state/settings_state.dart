@@ -1,19 +1,14 @@
 import 'package:flutter/foundation.dart';
-import 'package:gamepads_platform_interface/api/gamepad_event.dart';
-
-enum ControlsPreset {
-  web,
-  windows,
-}
+import 'package:gamepads/gamepads.dart';
 
 class AxisConfig {
-  final String keyName;
+  final GamepadAxis axis;
   final bool flipAxis;
 
-  const AxisConfig(this.keyName, this.flipAxis);
+  const AxisConfig(this.axis, this.flipAxis);
 
-  double? readEvent(GamepadEvent event) {
-    if (event.type == .analog && event.key == keyName) {
+  double? readEvent(NormalizedGamepadEvent event) {
+    if (event.axis == axis) {
       return flipAxis ? event.value * -1 : event.value;
     }
     return null;
@@ -21,12 +16,12 @@ class AxisConfig {
 }
 
 class GamepadButtonConfig {
-  final String keyName;
+  final GamepadButton button;
 
-  const GamepadButtonConfig(this.keyName);
+  const GamepadButtonConfig(this.button);
 
-  bool? isPressed(GamepadEvent event) {
-    if (event.type == .button && event.key == keyName) {
+  bool? isPressed(NormalizedGamepadEvent event) {
+    if (event.button == button) {
       return event.value > 0.9;
     }
     return null;
@@ -36,57 +31,32 @@ class GamepadButtonConfig {
 class SettingsState {
   // elevator axises:
   ValueNotifier<AxisConfig> gamepadElevator1UpDownAxis = ValueNotifier(
-    AxisConfig('analog 1', false),
+    AxisConfig(GamepadAxis.leftStickY, true),
   );
   ValueNotifier<AxisConfig> gamepadElevator2UpDownAxis = ValueNotifier(
-    AxisConfig('analog 3', false),
+    AxisConfig(GamepadAxis.rightStickY, true),
   );
   // d-pad:
   ValueNotifier<GamepadButtonConfig> gamepadDpadUp = ValueNotifier(
-    GamepadButtonConfig('button 1'),
+    GamepadButtonConfig(GamepadButton.dpadUp),
   );
   ValueNotifier<GamepadButtonConfig> gamepadDpadRight = ValueNotifier(
-    GamepadButtonConfig('button 2'),
+    GamepadButtonConfig(GamepadButton.dpadRight),
   );
   ValueNotifier<GamepadButtonConfig> gamepadDpadDown = ValueNotifier(
-    GamepadButtonConfig('button 3'),
+    GamepadButtonConfig(GamepadButton.dpadDown),
   );
   ValueNotifier<GamepadButtonConfig> gamepadDpadLeft = ValueNotifier(
-    GamepadButtonConfig('button 4'),
+    GamepadButtonConfig(GamepadButton.dpadLeft),
   );
   // activate/cancel:
   ValueNotifier<GamepadButtonConfig> gamepadActivateButton = ValueNotifier(
-    GamepadButtonConfig('button 5'),
+    GamepadButtonConfig(GamepadButton.a),
   );
   ValueNotifier<GamepadButtonConfig> gamepadCancelButton = ValueNotifier(
-    GamepadButtonConfig('button 6'),
+    GamepadButtonConfig(GamepadButton.b),
   );
   // audio
   ValueNotifier<double> gameFxVolume = ValueNotifier(0.15);
   ValueNotifier<double> musicVolume = ValueNotifier(0.25);
-
-  void applyControlsPreset(ControlsPreset preset) {
-    switch (preset) {
-      case .windows:
-        gamepadElevator1UpDownAxis.value = AxisConfig('leftThumbstickY', true);
-        gamepadElevator2UpDownAxis.value = AxisConfig('rightThumbstickY', true);
-        gamepadDpadUp.value = GamepadButtonConfig('dpadUp');
-        gamepadDpadRight.value = GamepadButtonConfig('dpadRight');
-        gamepadDpadDown.value = GamepadButtonConfig('dpadDown');
-        gamepadDpadLeft.value = GamepadButtonConfig('dpadLeft');
-        gamepadActivateButton.value = GamepadButtonConfig('a');
-        gamepadCancelButton.value = GamepadButtonConfig('b');
-        break;
-      case .web:
-        gamepadElevator1UpDownAxis.value = AxisConfig('analog 1', false);
-        gamepadElevator2UpDownAxis.value = AxisConfig('analog 3', false);
-        gamepadDpadUp.value = GamepadButtonConfig('button 12');
-        gamepadDpadRight.value = GamepadButtonConfig('button 15');
-        gamepadDpadDown.value = GamepadButtonConfig('button 13');
-        gamepadDpadLeft.value = GamepadButtonConfig('button 14');
-        gamepadActivateButton.value = GamepadButtonConfig('button 0');
-        gamepadCancelButton.value = GamepadButtonConfig('button 1');
-        break;
-    }
-  }
 }

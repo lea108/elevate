@@ -13,10 +13,9 @@ import 'package:elevate/scenes/building/components/elevator_touch_control.dart';
 import 'package:elevate/utils/gamepad_callbacks_mixin.dart';
 import 'package:elevate/utils/speed.dart';
 import 'package:flame/components.dart';
-import 'package:flame/experimental.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gamepads_platform_interface/api/gamepad_event.dart';
+import 'package:gamepads/gamepads.dart';
 
 class ElevatorCar extends RectangleComponent
     with GamepadCallbacks, KeyboardHandler, HasGameReference<MyGame> {
@@ -134,7 +133,7 @@ class ElevatorCar extends RectangleComponent
   }
 
   @override
-  void onGamepadEvent(GamepadEvent event) {
+  void onGamepadEvent(NormalizedGamepadEvent event) {
     var gamepadY = game.settingsState.gamepadElevator1UpDownAxis.value
         .readEvent(event);
     if (gamepadY != null) {
@@ -143,8 +142,6 @@ class ElevatorCar extends RectangleComponent
       }
       game.gameState.inputState.inputY.value = gamepadY;
     }
-
-    super.onGamepadEvent(event);
   }
 
   @override

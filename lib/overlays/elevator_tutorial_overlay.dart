@@ -37,41 +37,65 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
   @override
   Widget build(BuildContext context) {
     final tutorial = widget.game.gameState.tutorialState;
-    final mqSize = MediaQuery.sizeOf(context);
-
-    final width = 220.0;
-
-    return Align(
-      alignment: .center,
-      child: Padding(
-        padding: EdgeInsets.only(right: width + 50.0),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: width,
-            minHeight: min(200, mqSize.height),
-            maxHeight: min(700, mqSize.height),
+    return buildLayout(
+      context: context,
+      child: Card(
+        elevation: 6,
+        color: Palette.tutorialCardBg,
+        child: Padding(
+          padding: const EdgeInsets.all(mediumPadding),
+          child: ListenableBuilder(
+            listenable: tutorial,
+            builder: (context, child) {
+              return Column(
+                mainAxisSize: .min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ...buildContent(
+                    context,
+                    tutorial.stage,
+                  ),
+                ],
+              );
+            },
           ),
-          child: Card(
-            elevation: 6,
-            color: Palette.tutorialCardBg,
-            child: Padding(
-              padding: const EdgeInsets.all(mediumPadding),
-              child: ListenableBuilder(
-                listenable: tutorial,
-                builder: (context, child) {
-                  return Column(
-                    mainAxisSize: .min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ...buildContent(
-                        context,
-                        tutorial.stage,
-                      ),
-                    ],
-                  );
-                },
+        ),
+      ),
+    );
+  }
+
+  Widget buildLayout({required BuildContext context, required Widget child}) {
+    final mqSize = MediaQuery.sizeOf(context);
+    final width = 220.0;
+    return Align(
+      alignment: .centerLeft,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: mqSize.width / 2,
+          minHeight: min(200, mqSize.height),
+          maxHeight: min(700, mqSize.height),
+        ),
+        child: Padding(
+          padding: EdgeInsetsGeometry.only(
+            left: mediumPadding,
+            right: mediumPadding,
+          ),
+          child: Row(
+            mainAxisAlignment: .end,
+            mainAxisSize: .max,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: min(
+                    width,
+                    mqSize.width / 2 - 2 * mediumPadding,
+                  ),
+                  minHeight: min(200, mqSize.height),
+                  maxHeight: min(700, mqSize.height),
+                ),
+                child: child,
               ),
-            ),
+            ],
           ),
         ),
       ),

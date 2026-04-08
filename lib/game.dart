@@ -105,6 +105,10 @@ class MyGame extends FlameGame with TapCallbacks, HasKeyboardHandlerComponents {
       GameOverlay.elevatorTutorial.name,
       scene == GameScene.building,
     );
+    overlays.setVisible(
+      GameOverlay.touchControl.name,
+      scene == GameScene.building,
+    );
 
     if (scene != GameScene.building) {
       overlays.remove(GameOverlay.gameStatusbar.name);

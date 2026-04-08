@@ -6,7 +6,6 @@ import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/models/projection.dart';
 import 'package:elevate/models/state/elevator_state.dart';
 import 'package:elevate/scenes/building/components/elevator_floor_destination_indicator.dart';
-import 'package:elevate/scenes/building/components/elevator_indicators.dart';
 import 'package:elevate/scenes/building/components/elevator_queue.dart';
 import 'package:elevate/scenes/building/components/elevator_up_down_button.dart';
 import 'package:flame/components.dart';

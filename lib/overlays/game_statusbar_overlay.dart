@@ -1,7 +1,9 @@
 import 'package:elevate/game.dart';
+import 'package:elevate/models/state/time_state.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/overlays/widgets/status_bar_section.dart';
+import 'package:elevate/theme/responsive_layout.dart';
 import 'package:elevate/utils/format.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flame/extensions.dart';
@@ -14,28 +16,52 @@ class GameStatusbarOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool narrow = narrowLayout(context);
+
+    if (narrow) {
+      return Column(
+        children: [
+          Row(
+            children: [
+              Spacer(),
+              _elevatorStatus(context),
+              _transportedStatus(context, topRight: true),
+            ],
+          ),
+          Spacer(),
+          Row(
+            children: [
+              _timeStatus(context, bottomLeft: true),
+              _techStatus(context, placementBottom: true),
+              Spacer(),
+            ],
+          ),
+        ],
+      );
+    }
+
     return Align(
       alignment: .topRight,
       child: Row(
         children: [
-          _menu(context),
+          _menu(context, topLeft: true),
           Spacer(),
-          _techStatus(context),
+          _techStatus(context, placementTop: true),
           _elevatorStatus(context),
           _transportedStatus(context),
-          _timeStatus(context),
+          _timeStatus(context, topRight: true),
         ],
       ),
     );
   }
 
-  Widget _menu(BuildContext context) {
+  Widget _menu(BuildContext context, {bool topLeft = true}) {
     return StatusBarSection(
       game: game,
       padding: EdgeInsets.zero,
-      roundBottomRight: true,
+      roundBottomRight: topLeft,
       child: _Button(
-        roundBottomRight: true,
+        roundBottomRight: topLeft,
         onPressed: () {
           game.overlays.add(GameOverlay.inGameMenu.name);
         },
@@ -44,7 +70,11 @@ class GameStatusbarOverlay extends StatelessWidget {
     );
   }
 
-  Widget _techStatus(BuildContext context) {
+  Widget _techStatus(
+    BuildContext context, {
+    bool placementTop = false,
+    bool placementBottom = false,
+  }) {
     return ListenableBuilder(
       listenable: game.gameState.progressionState,
       builder: (context, _) {
@@ -53,12 +83,16 @@ class GameStatusbarOverlay extends StatelessWidget {
         return StatusBarSection(
           game: game,
           padding: EdgeInsets.zero,
-          roundBottomLeft: true,
-          roundBottomRight: true,
+          roundBottomLeft: placementTop,
+          roundBottomRight: placementTop,
+          roundTopLeft: placementBottom,
+          roundTopRight: placementBottom,
           gapRight: true,
           child: _Button(
-            roundBottomLeft: true,
-            roundBottomRight: true,
+            roundBottomLeft: placementTop,
+            roundBottomRight: placementTop,
+            roundTopLeft: placementBottom,
+            roundTopRight: placementBottom,
             onPressed: () {
               game.overlays.add(GameOverlay.techTree.name);
             },
@@ -89,7 +123,7 @@ class GameStatusbarOverlay extends StatelessWidget {
     );
   }
 
-  Widget _transportedStatus(BuildContext context) {
+  Widget _transportedStatus(BuildContext context, {bool topRight = false}) {
     return ListenableBuilder(
       listenable: game.gameState.progressionState,
       builder: (context, _) {
@@ -110,15 +144,19 @@ class GameStatusbarOverlay extends StatelessWidget {
         return StatusBarSection(
           game: game,
           roundBottomLeft: true,
-          roundBottomRight: true,
-          gapRight: true,
+          roundBottomRight: !topRight,
+          gapRight: !topRight,
           child: Text(transported),
         );
       },
     );
   }
 
-  Widget _timeStatus(BuildContext context) {
+  Widget _timeStatus(
+    BuildContext context, {
+    bool bottomLeft = false,
+    bool topRight = false,
+  }) {
     return ListenableBuilder(
       listenable: game.gameState.timeState,
       builder: (context, _) {
@@ -130,10 +168,13 @@ class GameStatusbarOverlay extends StatelessWidget {
 
         return StatusBarSection(
           game: game,
-          roundBottomLeft: true,
+          roundBottomLeft: topRight,
+          roundTopRight: bottomLeft,
           padding: EdgeInsets.zero,
+          gapRight: !topRight,
           child: _Button(
-            roundBottomLeft: true,
+            roundBottomLeft: topRight,
+            roundTopRight: bottomLeft,
             onPressed: () {
               game.overlays.add(GameOverlay.inGameMenu.name);
             },
@@ -187,6 +228,8 @@ class _Button extends StatelessWidget {
   final Widget child;
   final bool roundBottomLeft;
   final bool roundBottomRight;
+  final bool roundTopLeft;
+  final bool roundTopRight;
   final void Function() onPressed;
 
   const _Button({
@@ -194,6 +237,8 @@ class _Button extends StatelessWidget {
     required this.onPressed,
     this.roundBottomLeft = false,
     this.roundBottomRight = false,
+    this.roundTopLeft = false,
+    this.roundTopRight = false,
     required this.child,
   });
 
@@ -213,6 +258,12 @@ class _Button extends StatelessWidget {
                   ? Radius.circular(mediumPadding)
                   : Radius.zero,
               bottomRight: roundBottomRight
+                  ? Radius.circular(mediumPadding)
+                  : Radius.zero,
+              topLeft: roundTopLeft
+                  ? Radius.circular(mediumPadding)
+                  : Radius.zero,
+              topRight: roundTopRight
                   ? Radius.circular(mediumPadding)
                   : Radius.zero,
             ),

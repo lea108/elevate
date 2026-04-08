@@ -6,6 +6,7 @@ import 'package:elevate/overlays/in_game_menu_overlay.dart';
 import 'package:elevate/overlays/intro_overlay.dart';
 import 'package:elevate/overlays/settings_overlay.dart';
 import 'package:elevate/overlays/tech_tree_overlay.dart';
+import 'package:elevate/overlays/touch_control_overlay.dart';
 import 'package:flutter/widgets.dart';
 
 enum GameOverlay {
@@ -16,6 +17,7 @@ enum GameOverlay {
   endOfDayReport,
   techTree,
   settings,
+  touchControl,
 }
 
 Map<String, Widget Function(BuildContext context, MyGame game)>
@@ -31,4 +33,6 @@ overlayBuilderMap = {
   GameOverlay.endOfDayReport.name: (context, MyGame game) =>
       EndOfDayReportOverlay(game),
   GameOverlay.techTree.name: (context, MyGame game) => TechTreeOverlay(game),
+  GameOverlay.touchControl.name: (context, MyGame game) =>
+      TouchControlOverlay(game),
 };

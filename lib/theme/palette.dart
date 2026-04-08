@@ -26,4 +26,6 @@ class Palette {
   )!;
 
   static final tutorialCardBg = Colors.brown[800]!;
+
+  static final groundColor = Colors.brown[900]!;
 }

@@ -9,6 +9,7 @@ import 'package:elevate/models/projection.dart';
 import 'package:elevate/models/state/elevator_state.dart';
 import 'package:elevate/scenes/building/components/agent_sprite.dart';
 import 'package:elevate/scenes/building/components/elevator_full_indicator.dart';
+import 'package:elevate/scenes/building/components/elevator_touch_control.dart';
 import 'package:elevate/utils/gamepad_callbacks_mixin.dart';
 import 'package:elevate/utils/speed.dart';
 import 'package:flame/components.dart';
@@ -19,8 +20,6 @@ import 'package:gamepads_platform_interface/api/gamepad_event.dart';
 
 class ElevatorCar extends RectangleComponent
     with GamepadCallbacks, KeyboardHandler, HasGameReference<MyGame> {
-  double inputY = 0;
-
   final List<AgentSprite> _sprites = [];
 
   // depth perspective sides
@@ -30,6 +29,7 @@ class ElevatorCar extends RectangleComponent
   PositionComponent? agentSpritesLayer;
   RectangleComponent? foldOutRamp;
   ElevatorFullIndicator? fullIndicator;
+  ElevatorTouchControl? touchControl;
 
   final bool _useOuterPerspective = false;
   final _frontColor = Colors.grey[900]!;
@@ -52,8 +52,22 @@ class ElevatorCar extends RectangleComponent
       ..size = Vector2(xScale * 0.5, 3)
       ..position = size;
     fullIndicator = ElevatorFullIndicator();
+    touchControl =
+        ElevatorTouchControl(
+            deadZoneY1: size.y * 1.5,
+            deadZoneY2: size.y * 1.5 + size.y,
+          )
+          ..position = Vector2(-size.x * 0.5, -size.y * 1.5)
+          ..size = Vector2(size.x * 2, size.y * 1.5 * 2 + size.y);
 
-    addAll([?right, ?top, ?agentSpritesLayer, ?foldOutRamp, ?fullIndicator]);
+    addAll([
+      ?right,
+      ?top,
+      ?agentSpritesLayer,
+      ?foldOutRamp,
+      ?fullIndicator,
+      ?touchControl,
+    ]);
 
     return super.onLoad();
   }
@@ -121,14 +135,13 @@ class ElevatorCar extends RectangleComponent
 
   @override
   void onGamepadEvent(GamepadEvent event) {
-    final gamepadY = game.settingsState.gamepadElevator1UpDownAxis.value
+    var gamepadY = game.settingsState.gamepadElevator1UpDownAxis.value
         .readEvent(event);
     if (gamepadY != null) {
-      inputY = gamepadY;
-
-      if (inputY.abs() < 0.15) {
-        inputY = 0;
+      if (gamepadY.abs() < 0.15) {
+        gamepadY = 0;
       }
+      game.gameState.inputState.inputY.value = gamepadY;
     }
 
     super.onGamepadEvent(event);
@@ -144,12 +157,12 @@ class ElevatorCar extends RectangleComponent
     ].contains(event.logicalKey)) {
       if (keysPressed.contains(LogicalKeyboardKey.arrowUp) ||
           keysPressed.contains(LogicalKeyboardKey.keyW)) {
-        inputY = -1.0;
+        game.gameState.inputState.inputY.value = -1.0;
       } else if (keysPressed.contains(LogicalKeyboardKey.arrowDown) ||
           keysPressed.contains(LogicalKeyboardKey.keyS)) {
-        inputY = 1.0;
+        game.gameState.inputState.inputY.value = 1.0;
       } else {
-        inputY = 0.0;
+        game.gameState.inputState.inputY.value = 0.0;
       }
       return true;
     }
@@ -179,6 +192,7 @@ class ElevatorCar extends RectangleComponent
     final (snapAccel, snapDecel) = _snapAccelDecel;
 
     // User control
+    final inputY = game.gameState.inputState.inputY.value;
     double userDy = clampDouble(inputY * -0.1, -maxVelocity, maxVelocity);
     if (userDy.abs() < 0.005) {
       userDy = 0.0;

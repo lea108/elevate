@@ -4,6 +4,7 @@ import 'package:elevate/models/audio_effects.dart';
 import 'package:elevate/models/state/agents_state.dart';
 import 'package:elevate/models/state/building_state.dart';
 import 'package:elevate/models/state/elevator_state.dart';
+import 'package:elevate/models/state/input_state.dart';
 import 'package:elevate/models/state/progression_state.dart';
 import 'package:elevate/models/state/tech_tree_state.dart';
 import 'package:elevate/models/state/time_state.dart';
@@ -15,6 +16,7 @@ import 'package:flame/src/game/overlay_manager.dart';
 class GameState {
   late OverlayManager _overlays;
   late TimeState timeState;
+  late InputState inputState;
   late BuildingState buildingState;
   late ElevatorState elevatorState;
   late AgentsState agentsState;
@@ -33,6 +35,7 @@ class GameState {
 
   void reset() {
     timeState = TimeState();
+    inputState = InputState();
     buildingState = BuildingState();
     elevatorState = ElevatorState();
     agentsState = AgentsState();
@@ -123,6 +126,4 @@ class GameState {
 
     lastTutorialStage = tutorialState.stage;
   }
-
-  onBuildingChanged() {}
 }

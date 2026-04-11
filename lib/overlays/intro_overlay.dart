@@ -22,7 +22,7 @@ class IntroOverlay extends StatelessWidget {
             alignment: .center,
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxWidth: min(500, mqSize.width),
+                maxWidth: min(500, mqSize.width - 32),
                 maxHeight: mqSize.height,
               ),
               child: Column(

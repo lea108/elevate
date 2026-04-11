@@ -5,7 +5,6 @@ import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/overlays/widgets/double_slider_setting.dart';
 import 'package:elevate/overlays/widgets/gamepad_axis_settings.dart';
 import 'package:elevate/overlays/widgets/gamepad_button_setting.dart';
-import 'package:elevate/overlays/widgets/overlay_gamepad_control.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,9 @@ class SettingsOverlay extends StatelessWidget {
 
     final windowSize = game.camera.viewport.size;
     return DialogBackdrop(
+      onBeforeGamepadIntent: (activator, intent) {
+        return false;
+      },
       child: AlertDialog(
         title: Text('Settings'),
         content: SizedBox(

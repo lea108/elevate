@@ -20,17 +20,18 @@ class ElevatorTutorialOverlay extends StatefulWidget {
 }
 
 class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
-  StreamSubscription? _unsubscribe;
+  final _focusScope = FocusScopeNode();
 
   @override
   void initState() {
     super.initState();
-    _unsubscribe = Gamepads.normalizedEvents.listen(onGamepadEvent);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusScope.requestFocus();
+    });
   }
 
   @override
   void dispose() {
-    _unsubscribe?.cancel();
     super.dispose();
   }
 
@@ -39,25 +40,28 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
     final tutorial = widget.game.gameState.tutorialState;
     return buildLayout(
       context: context,
-      child: Card(
-        elevation: 6,
-        color: Palette.tutorialCardBg,
-        child: Padding(
-          padding: const EdgeInsets.all(mediumPadding),
-          child: ListenableBuilder(
-            listenable: tutorial,
-            builder: (context, child) {
-              return Column(
-                mainAxisSize: .min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ...buildContent(
-                    context,
-                    tutorial.stage,
-                  ),
-                ],
-              );
-            },
+      child: FocusScope(
+        node: _focusScope,
+        child: Card(
+          elevation: 6,
+          color: Palette.tutorialCardBg,
+          child: Padding(
+            padding: const EdgeInsets.all(mediumPadding),
+            child: ListenableBuilder(
+              listenable: tutorial,
+              builder: (context, child) {
+                return Column(
+                  mainAxisSize: .min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ...buildContent(
+                      context,
+                      tutorial.stage,
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -245,17 +249,6 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
         value: n / target,
       ),
     ];
-  }
-
-  void onGamepadEvent(NormalizedGamepadEvent event) {
-    final settings = widget.game.settingsState;
-    if (widget.game.overlays.activeOverlays.lastOrNull !=
-        GameOverlay.elevatorTutorial.name) {
-      return;
-    }
-    if (settings.gamepadActivateButton.value.isPressed(event) == true) {
-      skip();
-    }
   }
 }
 

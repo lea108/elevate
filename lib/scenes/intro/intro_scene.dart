@@ -1,8 +1,8 @@
 import 'package:elevate/game.dart';
 import 'package:elevate/scenes/scenes.dart';
-import 'package:elevate/utils/gamepad_callbacks_mixin.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame_gamepads/flame_gamepads.dart';
 import 'package:flutter/services.dart';
 import 'package:gamepads/gamepads.dart';
 

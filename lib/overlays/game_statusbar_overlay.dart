@@ -343,8 +343,8 @@ class _Button extends StatelessWidget {
         ),
         backgroundColor: WidgetStatePropertyAll(Colors.transparent),
         foregroundColor: WidgetStatePropertyAll(Colors.white),
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(
+        shape: WidgetStateProperty.resolveWith((state) {
+          return RoundedRectangleBorder(
             borderRadius: BorderRadiusGeometry.only(
               bottomLeft: roundedCorner.contains(RoundedCorner.bottomLeft)
                   ? Radius.circular(mediumPadding)
@@ -359,8 +359,11 @@ class _Button extends StatelessWidget {
                   ? Radius.circular(mediumPadding)
                   : Radius.zero,
             ),
-          ),
-        ),
+            side: state.contains(WidgetState.focused)
+                ? focusedBorderSide.copyWith(strokeAlign: 1)
+                : unfocusedBorderSide,
+          );
+        }),
       ),
       onPressed: onPressed,
       child: child,

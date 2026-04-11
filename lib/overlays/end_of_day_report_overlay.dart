@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:elevate/game.dart';
 import 'package:elevate/overlays/overlays.dart';
-import 'package:elevate/overlays/widgets/overlay_gamepad_control.dart';
 import 'package:elevate/overlays/widgets/economy_indicator.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
@@ -26,42 +23,43 @@ class EndOfDayReportOverlay extends StatelessWidget {
         if (report == null) {
           return Container();
         }
-        print('building economy: ${report.buildingEconomy}');
         return DialogBackdrop(
-          child: OverlayGamepadControl(
-            game: game,
-            overlay: GameOverlay.endOfDayReport,
-            close: () => close(false),
-            child: AlertDialog(
-              elevation: 18,
-              title: Text('Day ${report.day + 1} report'),
-              content: Column(
-                mainAxisSize: .min,
-                children: [
-                  Text(
-                    'Transported (🧍): ${report.nTransported}\n'
-                    'Late (☹️): ${report.nTransportedLate}\n'
-                    'Very late (😡): ${report.nTransportedVeryLate}\n'
-                    '\n'
-                    'Tech coins (⭐): ${progress.techCoins}',
-                  ),
-                  Text('\n\nBuilding economy:'),
-                  SizedBox(height: mediumPadding),
-                  EconomyIndicator(
-                    key: ValueKey(report.buildingEconomy),
-                    value: report.buildingEconomy,
-                    width: 200,
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => close(true),
-                  child: Text('Open Tech Tree'),
+          onBeforeGamepadIntent: (activator, intent) {
+            if (intent is DismissIntent) {
+              close(false);
+              return false;
+            }
+            return true;
+          },
+          child: AlertDialog(
+            elevation: 18,
+            title: Text('Day ${report.day + 1} report'),
+            content: Column(
+              mainAxisSize: .min,
+              children: [
+                Text(
+                  'Transported (🧍): ${report.nTransported}\n'
+                  'Late (☹️): ${report.nTransportedLate}\n'
+                  'Very late (😡): ${report.nTransportedVeryLate}\n'
+                  '\n'
+                  'Tech coins (⭐): ${progress.techCoins}',
                 ),
-                TextButton(onPressed: () => close(false), child: Text('Close')),
+                Text('\n\nBuilding economy:'),
+                SizedBox(height: mediumPadding),
+                EconomyIndicator(
+                  key: ValueKey(report.buildingEconomy),
+                  value: report.buildingEconomy,
+                  width: 200,
+                ),
               ],
             ),
+            actions: [
+              TextButton(
+                onPressed: () => close(true),
+                child: Text('Open Tech Tree'),
+              ),
+              TextButton(onPressed: () => close(false), child: Text('Close')),
+            ],
           ),
         );
       },

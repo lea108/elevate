@@ -2,8 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:elevate/game.dart';
 import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/overlays/overlays.dart';
-import 'package:elevate/overlays/widgets/overlay_gamepad_control.dart';
-import 'package:elevate/theme/palette.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -17,53 +15,56 @@ class InGameMenuOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DialogBackdrop(
+      onBeforeGamepadIntent: (activator, intent) {
+        if (intent is DismissIntent) {
+          close();
+          return false;
+        }
+        return true;
+      },
       child: Align(
         alignment: .center,
-        child: OverlayGamepadControl(
-          game: game,
-          overlay: GameOverlay.inGameMenu,
-          child: AlertDialog(
-            title: Center(child: Text('Menu')),
-            actionsAlignment: MainAxisAlignment.center,
-            content: Column(
-              mainAxisSize: .min,
-              children:
-                  [
-                        SizedBox(height: 20),
-                        TextButton(
-                          onPressed: techTree,
-                          child: Text('Tech tree'),
-                        ),
-                        TextButton(
-                          onPressed: settings,
-                          child: Text('Settings'),
-                        ),
-                        SizedBox(height: 20),
-                        TextButton(
-                          onPressed: restartGame,
-                          child: Text('Restart Game'),
-                        ),
-                        TextButton(
-                          onPressed: github,
-                          child: Text('GitHub'),
-                        ),
-                      ]
-                      .mapIndexed(
-                        (i, btn) => i > 0
-                            ? Padding(
-                                padding: EdgeInsetsGeometry.only(
-                                  top: mediumPadding,
-                                ),
-                                child: btn,
-                              )
-                            : btn,
-                      )
-                      .toList(),
-            ),
-            actions: [
-              TextButton(onPressed: () => close(), child: Text('Close')),
-            ],
+        child: AlertDialog(
+          title: Center(child: Text('Menu')),
+          actionsAlignment: MainAxisAlignment.center,
+          content: Column(
+            mainAxisSize: .min,
+            children:
+                [
+                      SizedBox(height: 20),
+                      TextButton(
+                        onPressed: techTree,
+                        child: Text('Tech tree'),
+                      ),
+                      TextButton(
+                        onPressed: settings,
+                        child: Text('Settings'),
+                      ),
+                      SizedBox(height: 20),
+                      TextButton(
+                        onPressed: restartGame,
+                        child: Text('Restart Game'),
+                      ),
+                      TextButton(
+                        onPressed: github,
+                        child: Text('GitHub'),
+                      ),
+                    ]
+                    .mapIndexed(
+                      (i, btn) => i > 0
+                          ? Padding(
+                              padding: EdgeInsetsGeometry.only(
+                                top: mediumPadding,
+                              ),
+                              child: btn,
+                            )
+                          : btn,
+                    )
+                    .toList(),
           ),
+          actions: [
+            TextButton(onPressed: () => close(), child: Text('Close')),
+          ],
         ),
       ),
     );

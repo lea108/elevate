@@ -12,10 +12,10 @@ import 'package:elevate/scenes/building/components/ground.dart';
 import 'package:elevate/scenes/building/components/rooms.dart';
 import 'package:elevate/scenes/building/components/sky.dart';
 import 'package:elevate/scenes/building/components/time_info.dart';
-import 'package:elevate/utils/gamepad_callbacks_mixin.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
+import 'package:flame_gamepads/flame_gamepads.dart';
 import 'package:flutter/services.dart';
 import 'package:gamepads/gamepads.dart';
 
@@ -121,7 +121,7 @@ class BuildingScene extends World
 
   @override
   void onGamepadEvent(NormalizedGamepadEvent event) {
-    if (!game.hasOpenMenu) {
+    if (!game.hasOpenMenu && game.gameState.timeState.timeOfDay > 1) {
       final escape = game.settingsState.gamepadCancelButton.value.isPressed(
         event,
       );

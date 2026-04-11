@@ -1,7 +1,11 @@
 import 'package:elevate/theme/palette.dart';
 import 'package:flutter/material.dart';
 
+const narrowPadding = 6.0;
 const mediumPadding = 10.0;
+
+const focusedBorderSide = BorderSide(width: 3, color: Colors.orange);
+const unfocusedBorderSide = BorderSide(width: 3, color: Colors.transparent);
 
 ThemeData appTheme() {
   var theme = ThemeData.from(
@@ -23,6 +27,7 @@ ThemeData appTheme() {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),
       ),
+      insetPadding: EdgeInsets.all(10),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -32,8 +37,8 @@ ThemeData appTheme() {
           return RoundedRectangleBorder(
             borderRadius: BorderRadiusGeometry.circular(mediumPadding),
             side: state.contains(WidgetState.focused)
-                ? BorderSide(width: 3, color: Colors.orange)
-                : BorderSide(width: 3, color: Colors.transparent),
+                ? focusedBorderSide
+                : unfocusedBorderSide,
           );
         }),
       ),
@@ -43,8 +48,8 @@ ThemeData appTheme() {
         shape: WidgetStateProperty.resolveWith((state) {
           return StadiumBorder(
             side: state.contains(WidgetState.focused)
-                ? BorderSide(width: 3, color: Colors.orange)
-                : BorderSide.none,
+                ? focusedBorderSide
+                : unfocusedBorderSide,
           );
         }),
       ),

@@ -41,6 +41,8 @@ dependencies:
   url_launcher: ^6.3.2
   audioplayers: ^6.6.0
   dart_random_choice: ^0.2.0
+  flame_gamepads: ^0.1.1
+  flutter_gamepads: ^0.1.11
 
 #dependency_overrides:
 #  gamepads_windows:

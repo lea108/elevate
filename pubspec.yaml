@@ -58,6 +58,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: "^0.14.4"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -74,3 +75,30 @@ flutter:
   assets:
      - assets/images/
      - assets/audio/
+
+
+flutter_launcher_icons:
+  android: true
+  image_path_android: "assets/images/icon_flat.png"
+  adaptive_icon_background: "assets/images/icon_background.png"
+  adaptive_icon_foreground: "assets/images/icon_foreground.png"
+  adaptive_icon_monochrome: "assets/images/icon_monochrome.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  ios: true
+  image_path_ios: "assets/images/icon_foreground.png"
+  remove_alpha_ios: true
+  background_color_ios: "#ffc743"
+  image_path_ios_dark_transparent: "assets/images/icon_greyscale.png"
+  image_path_ios_tinted_grayscale: "assets/images/icon_greyscale.png"
+  web:
+    generate: true
+    image_path: "assets/images/icon_rounded.png"
+    #background_color: "#hexcode"
+    theme_color: "#ffc743"
+  windows:
+    generate: true
+    image_path: "assets/images/icon_rounded.png"
+    icon_size: 256 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/icon_rounded.png"

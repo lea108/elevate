@@ -39,7 +39,7 @@ class GamepadButtonConfig {
 
   factory GamepadButtonConfig.fromJson(Map<String, dynamic> data) {
     return GamepadButtonConfig(
-      GamepadButton.values.firstWhere((v) => v.name == data['a']),
+      GamepadButton.values.firstWhere((v) => v.name == data['b']),
     );
   }
 
@@ -144,7 +144,7 @@ class SettingsState {
           data[key] = buttonConfig.value.toJson();
           break;
         case ValueNotifier<double> doubleConfig:
-          data[key] = doubleConfig;
+          data[key] = doubleConfig.value;
           break;
       }
     });

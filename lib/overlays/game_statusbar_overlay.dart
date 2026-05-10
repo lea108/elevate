@@ -256,42 +256,49 @@ class GameStatusbarOverlay extends StatelessWidget {
     bool placementTop = false,
     Set<RoundedCorner> roundedCorner = const {},
   }) {
-    return ListenableBuilder(
-      listenable: game.gameState.timeState,
-      builder: (context, _) {
-        final time = game.gameState.timeState;
-        final t = formatTimeOfDay(time.timeOfDay);
-        final timeText = ' $t day: ${time.day + 1}';
-        final paused = time.paused;
-        final fastForward = time.fastForward;
+    return ValueListenableBuilder(
+      valueListenable: game.enginePaused,
+      builder: (context, enginePaused, child) {
+        return ListenableBuilder(
+          listenable: game.gameState.timeState,
+          builder: (context, _) {
+            final time = game.gameState.timeState;
+            final t = formatTimeOfDay(time.timeOfDay);
+            final timeText = ' $t day: ${time.day + 1}';
+            final paused = time.paused || enginePaused;
+            final fastForward = time.fastForward;
 
-        return StatusBarSection(
-          game: game,
-          useSkyColor: placementTop,
-          roundedCorner: roundedCorner,
-          padding: EdgeInsets.zero,
-          gapRight: gapRight,
-          child: _Button(
-            roundedCorner: roundedCorner,
-            onPressed: () {
-              game.overlays.add(GameOverlay.inGameMenu.name);
-            },
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minWidth: 100),
-              child: Row(
-                mainAxisAlignment: .spaceBetween,
-                children: [
-                  Icon(
-                    paused
-                        ? Icons.pause
-                        : (fastForward ? Icons.fast_forward : Icons.play_arrow),
-                    size: 20,
+            return StatusBarSection(
+              game: game,
+              useSkyColor: placementTop,
+              roundedCorner: roundedCorner,
+              padding: EdgeInsets.zero,
+              gapRight: gapRight,
+              child: _Button(
+                roundedCorner: roundedCorner,
+                onPressed: () {
+                  game.overlays.add(GameOverlay.inGameMenu.name);
+                },
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minWidth: 100),
+                  child: Row(
+                    mainAxisAlignment: .spaceBetween,
+                    children: [
+                      Icon(
+                        paused
+                            ? Icons.pause
+                            : (fastForward
+                                  ? Icons.fast_forward
+                                  : Icons.play_arrow),
+                        size: 20,
+                      ),
+                      Text(timeText),
+                    ],
                   ),
-                  Text(timeText),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

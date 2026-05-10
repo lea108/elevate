@@ -25,6 +25,8 @@ class MyGame extends FlameGame
   late final MusicComposer musicComposer;
   late final AudioEffects audioEffects;
 
+  ValueNotifier<bool> enginePaused = ValueNotifier(false);
+
   @override
   bool get debugMode => false;
 
@@ -79,6 +81,7 @@ class MyGame extends FlameGame
 
   void _lifecycleRestore() {
     resumeEngine();
+    enginePaused.value = false;
     musicComposer.setVolume(settingsState.musicVolume.value);
     audioEffects.setVolume(settingsState.gameFxVolume.value);
     if (gameState.restoreAppState()) {
@@ -91,6 +94,7 @@ class MyGame extends FlameGame
     musicComposer.setVolume(0);
     audioEffects.setVolume(0);
     _persistScene();
+    enginePaused.value = true;
     pauseEngine();
   }
 

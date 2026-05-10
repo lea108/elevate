@@ -33,7 +33,7 @@ class TutorialState extends ChangeNotifier {
     reset();
   }
 
-  reset() {
+  void reset() {
     _stage = .elevators1Controls;
     _counter = 0;
   }

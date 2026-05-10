@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:elevate/main.dart';
 import 'package:elevate/models/audio_effects.dart';
 import 'package:elevate/models/state/agents_state.dart';
@@ -131,6 +132,8 @@ class GameState {
 
   Map<String, dynamic> toJson() {
     final data = {
+      'lastDay': lastDay,
+      'lastTutorialStage': lastTutorialStage?.name,
       'time': timeState.toJson(),
       'building': buildingState.toJson(),
       'elevator': elevatorState.toJson(),
@@ -145,6 +148,10 @@ class GameState {
   bool applyJson(Map<String, dynamic> data, {bool restoreOnFail = true}) {
     final restoreData = restoreOnFail ? toJson() : null;
     try {
+      lastDay = data['lastDay'];
+      lastTutorialStage = TutorialStage.values.firstWhereOrNull(
+        (v) => v.name == data['lastTutorialStage'],
+      );
       timeState.applyJson(data['time']);
       inputState.reset();
       buildingState.applyJson(data['building']);

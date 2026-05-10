@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+import 'package:elevate/main.dart';
 import 'package:elevate/models/audio_effects.dart';
 import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/models/music_composer.dart';
 import 'package:elevate/models/state/game_state.dart';
 import 'package:elevate/models/state/settings_state.dart';
+import 'package:elevate/models/state/tutorial_state.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/router.dart';
 import 'package:elevate/scenes/scenes.dart';
@@ -31,7 +34,10 @@ class MyGame extends FlameGame
     audioEffects = AudioEffects();
     gameState = GameState(overlays, audioEffects);
     musicComposer = MusicComposer();
-    router = createRouter();
+    final initialScene =
+        _readPersistedScene() ??
+        (GameConsts.skipIntro ? GameScene.building : GameScene.intro);
+    router = createRouter(initialRoute: initialScene.route);
     add(router);
 
     settingsState.musicVolume.addListener(onMusicVolumeChange);
@@ -39,10 +45,11 @@ class MyGame extends FlameGame
     onMusicVolumeChange();
     onEffectsVolumeChange();
 
-    changeScene(GameConsts.skipIntro ? GameScene.building : GameScene.intro);
-
     _initialized = true;
+    // Restore state
     _lifecycleRestore();
+
+    changeScene(initialScene);
   }
 
   @override
@@ -76,9 +83,6 @@ class MyGame extends FlameGame
     audioEffects.setVolume(settingsState.gameFxVolume.value);
     if (gameState.restoreAppState()) {
       gameState.update(0, hasOpenMenu);
-      if (router.isMounted && !isBuildingSceneActive) {
-        changeScene(GameScene.building);
-      }
     }
   }
 
@@ -86,6 +90,7 @@ class MyGame extends FlameGame
     gameState.persistAppState();
     musicComposer.setVolume(0);
     audioEffects.setVolume(0);
+    _persistScene();
     pauseEngine();
   }
 
@@ -103,6 +108,18 @@ class MyGame extends FlameGame
   bool get isBuildingSceneActive =>
       router.isMounted && router.currentRoute.name == RouteId.building.name;
 
+  RouteId? get currentRoute => router.isMounted
+      ? RouteId.values.firstWhereOrNull(
+          (v) => v.name == router.currentRoute.name,
+        )
+      : null;
+
+  GameScene? get currentScene => switch (currentRoute) {
+    RouteId.building => GameScene.building,
+    RouteId.intro => GameScene.intro,
+    _ => null,
+  };
+
   @override
   void update(double dt) {
     musicComposer.update(dt, gameState.elevatorState.elevatorFloorRatio);
@@ -115,12 +132,8 @@ class MyGame extends FlameGame
   }
 
   Future<void> changeScene(GameScene scene) async {
-    final route = switch (scene) {
-      GameScene.intro => RouteId.intro,
-      GameScene.building => RouteId.building,
-    };
-
-    if (router.isMounted) {
+    final route = scene.route;
+    if (router.isMounted && router.currentRoute.name != route.name) {
       router.pushReplacementNamed(route.name);
     }
 
@@ -135,7 +148,8 @@ class MyGame extends FlameGame
     );
     overlays.setVisible(
       GameOverlay.elevatorTutorial.name,
-      scene == GameScene.building,
+      scene == GameScene.building &&
+          gameState.tutorialState.stage != TutorialStage.done,
     );
 
     if (scene != GameScene.building) {
@@ -158,5 +172,16 @@ class MyGame extends FlameGame
 
   void onEffectsVolumeChange() {
     audioEffects.setVolume(settingsState.gameFxVolume.value);
+  }
+
+  void _persistScene() {
+    sharedPreferences.setString('appScene', currentScene?.name ?? '');
+  }
+
+  GameScene? _readPersistedScene() {
+    final persistedScene = sharedPreferences.getString('appScene');
+    return GameScene.values.firstWhereOrNull(
+      (v) => v.name == persistedScene,
+    );
   }
 }

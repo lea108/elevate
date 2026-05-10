@@ -61,6 +61,7 @@ class TechTreeState extends ChangeNotifier {
 
   // dart format off
   void reset() {
+    techCatalog.clear();
     techCatalog.addAll([
       [
         TechData(TechId.inElevatorCarButtons,'In-elevator buttons', 'tech_in_elevator_buttons.png', 1, 'Add floor level buttons in the elevator so people can indicate which level they want to go to.'),

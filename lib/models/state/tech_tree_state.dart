@@ -204,4 +204,19 @@ class TechTreeState extends ChangeNotifier {
   }
 
   void update(double elapsed) {}
+
+  Map<String, dynamic> toJson() {
+    return {
+      'activated': activated.map((t) => t.name).toList(),
+    };
+  }
+
+  void applyJson(Map<String, dynamic> data) {
+    reset();
+    activated.addAll([
+      ...data['activated'].map(
+        (name) => TechId.values.firstWhere((v) => v.name == name),
+      ),
+    ]);
+  }
 }

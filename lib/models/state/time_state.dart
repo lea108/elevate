@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'dart:ui';
 
+import 'package:elevate/utils/color_extensions.dart';
 import 'package:elevate/utils/sky_color.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 
 class TimeState extends ChangeNotifier {
@@ -69,5 +69,29 @@ class TimeState extends ChangeNotifier {
     timeOfDaySpeed = resolveTimeOfDaySpeed();
     notifyListeners();
     return elapsed;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_menuPaused': _menuPaused,
+      'gameSpeed': gameSpeed,
+      'timeOfDaySpeed': timeOfDaySpeed,
+      't': t,
+      'timeOfDay': timeOfDay,
+      'day': day,
+      'lastActiveGamePlay': lastActiveGamePlay,
+      'skyColor': skyColor.toJson(),
+    };
+  }
+
+  void applyJson(Map<String, dynamic> data) {
+    _menuPaused = data['_menuPaused'];
+    gameSpeed = data['gameSpeed'];
+    timeOfDaySpeed = data['timeOfDaySpeed'];
+    t = data['t'];
+    timeOfDay = data['timeOfDay'];
+    day = data['day'];
+    lastActiveGamePlay = data['lastActiveGamePlay'];
+    skyColor = colorFromJson(data['skyColor']);
   }
 }

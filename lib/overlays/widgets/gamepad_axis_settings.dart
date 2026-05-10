@@ -6,7 +6,7 @@ import 'package:gamepads/gamepads.dart';
 
 class GamepadAxisSetting extends StatefulWidget {
   final String label;
-  final ValueNotifier<AxisConfig> setting;
+  final ValueNotifier<GamepadAxisConfig> setting;
   const GamepadAxisSetting({
     required this.label,
     required this.setting,
@@ -61,7 +61,7 @@ class _GamepadAxisSettingState extends State<GamepadAxisSetting> {
   void onGamepadEvent(NormalizedGamepadEvent event) {
     // require a high value to not use cross axis false positive
     if (edit && event.axis != null && event.value.abs() > 0.7) {
-      widget.setting.value = AxisConfig(event.axis!, event.value > 0);
+      widget.setting.value = GamepadAxisConfig(event.axis!, event.value > 0);
       stopEdit();
     }
   }

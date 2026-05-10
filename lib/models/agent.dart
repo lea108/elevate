@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:elevate/models/game_consts.dart';
 
 enum AgentLocation {
@@ -38,4 +39,36 @@ class AgentData {
   }
 
   AgentData(this.roomLvl, this.roomIndex);
+
+  factory AgentData.fromJson(Map<String, dynamic> data) {
+    final agentData = AgentData(data['roomLvl'], data['roomIndex']);
+    agentData.currentLvl = data['currentLvl'];
+    agentData.nextStateChange = data['nextStateChange'];
+    agentData.travelStartAt = data['travelStartAt'];
+    agentData.lateness = AgentLateness.values.firstWhereOrNull(
+      (v) => v.name == data['lateness'],
+    );
+    agentData.currentLocation = AgentLocation.values.firstWhere(
+      (v) => v.name == data['currentLocation'],
+    );
+    agentData.targetLocation = AgentLocation.values.firstWhere(
+      (v) => v.name == data['targetLocation'],
+    );
+    agentData.targetLvl = data['targetLvl'];
+    return agentData;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'roomLvl': roomLvl,
+      'roomIndex': roomIndex,
+      'currentLvl': roomLvl,
+      'nextStateChange': nextStateChange,
+      'travelStartAt': travelStartAt,
+      'lateness': lateness?.name,
+      'currentLocation': currentLocation.name,
+      'targetLocation': targetLocation.name,
+      'targetLvl': targetLvl,
+    };
+  }
 }

@@ -29,6 +29,32 @@ class RoomData {
     this.nEmployees = 0,
     this.nPeopleInRoom = 0,
   });
+
+  factory RoomData.fromJson(
+    Map<String, dynamic> jsonData,
+    Map<RoomId, RoomDef> roomDefs,
+  ) {
+    final RoomId roomId = RoomId.values.firstWhere(
+      (v) => v.name == jsonData['roomDefId'],
+    );
+    return RoomData(
+      jsonData['startX'],
+      roomDefs[roomId]!,
+      rented: jsonData['rented'],
+      nEmployees: jsonData['nEmployees'],
+      nPeopleInRoom: jsonData['nPeopleInRoom'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'startX': startX,
+      'roomDefId': roomDef.id.name,
+      'rented': rented,
+      'nEmployees': nEmployees,
+      'nPeopleInRoom': nPeopleInRoom,
+    };
+  }
 }
 
 /// Describes a key/locator of a room
@@ -317,6 +343,35 @@ class BuildingState extends ChangeNotifier {
       TutorialStage.finalNotes,
     ].contains(tutorial.stage)) {
       _processBuildingProgress(progress, elevator);
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, List<Map<String, dynamic>>> serializedRooms = {};
+    for (var lvl in rooms.keys) {
+      final levelRooms = rooms[lvl]!;
+      serializedRooms['$lvl'] = levelRooms.map((r) => r.toJson()).toList();
+    }
+
+    return {
+      'rooms': serializedRooms,
+    };
+  }
+
+  void applyJson(Map<String, dynamic> data) {
+    nFloorsUp = 0;
+    nFloorsDown = 0;
+    rooms = {};
+    final Map<String, dynamic> serializedRooms = data['rooms'];
+    for (String lvl in serializedRooms.keys) {
+      final List<dynamic> serializedLevelRooms = serializedRooms[lvl];
+      rooms[int.parse(lvl)] = serializedLevelRooms
+          .map((r) => RoomData.fromJson(r, roomDefs))
+          .toList();
+    }
+    if (rooms.keys.isNotEmpty) {
+      nFloorsUp = max(0, rooms.keys.max);
+      nFloorsDown = max(0, -rooms.keys.min);
     }
   }
 }

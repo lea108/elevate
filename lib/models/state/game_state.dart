@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:elevate/main.dart';
 import 'package:elevate/models/audio_effects.dart';
 import 'package:elevate/models/state/agents_state.dart';
 import 'package:elevate/models/state/building_state.dart';
@@ -125,5 +127,57 @@ class GameState {
     }
 
     lastTutorialStage = tutorialState.stage;
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = {
+      'time': timeState.toJson(),
+      'building': buildingState.toJson(),
+      'elevator': elevatorState.toJson(),
+      'agents': agentsState.toJson(),
+      'tutorial': tutorialState.toJson(),
+      'progression': progressionState.toJson(),
+      'techTree': techTreeState.toJson(),
+    };
+    return data;
+  }
+
+  bool applyJson(Map<String, dynamic> data, {bool restoreOnFail = true}) {
+    final restoreData = restoreOnFail ? toJson() : null;
+    try {
+      timeState.applyJson(data['time']);
+      inputState.reset();
+      buildingState.applyJson(data['building']);
+      elevatorState.applyJson(data['elevator']);
+      agentsState.applyJson(data['agents']);
+      tutorialState.applyJson(data['tutorial']);
+      progressionState.applyJson(data['progression']);
+      techTreeState.applyJson(data['techTree']);
+      return true;
+    } catch (e) {
+      print('Persist error: $e');
+    }
+
+    if (restoreData != null) {
+      applyJson(restoreData, restoreOnFail: false);
+    } else {
+      reset();
+    }
+    return false;
+  }
+
+  void persistAppState() {
+    final jsonData = toJson();
+    final payload = json.encode(jsonData);
+    sharedPreferences.setString('appState', payload);
+  }
+
+  bool restoreAppState() {
+    final payload = sharedPreferences.getString('appState');
+    if (payload != null) {
+      final jsonData = json.decode(payload);
+      return applyJson(jsonData);
+    }
+    return false;
   }
 }

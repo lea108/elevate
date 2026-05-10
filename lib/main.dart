@@ -6,11 +6,18 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gamepads/flutter_gamepads.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 FocusNode rootFocusNode = FocusNode();
 
-void main() {
+late final SharedPreferencesWithCache sharedPreferences;
+
+Future<void> main() async {
+  sharedPreferences = await SharedPreferencesWithCache.create(
+    cacheOptions: .new(),
+  );
   final theme = appTheme();
+
   runApp(
     GamepadControl(
       child: MaterialApp(

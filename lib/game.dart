@@ -11,15 +11,16 @@ import 'package:elevate/scenes/scenes.dart';
 import 'package:elevate/utils/overlay_manager_extension.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:gamepads/gamepads.dart';
+import 'package:flutter/widgets.dart';
 
-class MyGame extends FlameGame with TapCallbacks, HasKeyboardHandlerComponents {
+class MyGame extends FlameGame
+    with TapCallbacks, HasKeyboardHandlerComponents, WidgetsBindingObserver {
+  bool _initialized = false;
   late final RouterComponent router;
   late final GameState gameState;
   late final SettingsState settingsState;
   late final MusicComposer musicComposer;
   late final AudioEffects audioEffects;
-  final List<StreamSubscription> unsubscribe = [];
 
   @override
   bool get debugMode => false;
@@ -33,13 +34,15 @@ class MyGame extends FlameGame with TapCallbacks, HasKeyboardHandlerComponents {
     router = createRouter();
     add(router);
 
-    unsubscribe.add(Gamepads.events.listen(onGamepadEvent));
     settingsState.musicVolume.addListener(onMusicVolumeChange);
     settingsState.gameFxVolume.addListener(onEffectsVolumeChange);
     onMusicVolumeChange();
     onEffectsVolumeChange();
 
     changeScene(GameConsts.skipIntro ? GameScene.building : GameScene.intro);
+
+    _initialized = true;
+    _lifecycleRestore();
   }
 
   @override
@@ -51,13 +54,40 @@ class MyGame extends FlameGame with TapCallbacks, HasKeyboardHandlerComponents {
   @override
   void onDispose() {
     settingsState.musicVolume.removeListener(onMusicVolumeChange);
-    for (var u in unsubscribe) {
-      u.cancel();
-    }
     super.onDispose();
   }
 
-  void onGamepadEvent(GamepadEvent event) {}
+  @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    super.lifecycleStateChange(state);
+    if (!_initialized) {
+      return;
+    }
+    if (state == AppLifecycleState.resumed) {
+      _lifecycleRestore();
+    } else {
+      _lifecycleClosed();
+    }
+  }
+
+  void _lifecycleRestore() {
+    resumeEngine();
+    musicComposer.setVolume(settingsState.musicVolume.value);
+    audioEffects.setVolume(settingsState.gameFxVolume.value);
+    if (gameState.restoreAppState()) {
+      gameState.update(0, hasOpenMenu);
+      if (router.isMounted && !isBuildingSceneActive) {
+        changeScene(GameScene.building);
+      }
+    }
+  }
+
+  void _lifecycleClosed() {
+    gameState.persistAppState();
+    musicComposer.setVolume(0);
+    audioEffects.setVolume(0);
+    pauseEngine();
+  }
 
   bool get hasOpenMenu {
     final activeOverlays = overlays.activeOverlays.toSet();
@@ -70,11 +100,14 @@ class MyGame extends FlameGame with TapCallbacks, HasKeyboardHandlerComponents {
     return activeOverlays.intersection(menuOverlays).isNotEmpty;
   }
 
+  bool get isBuildingSceneActive =>
+      router.isMounted && router.currentRoute.name == RouteId.building.name;
+
   @override
   void update(double dt) {
     musicComposer.update(dt, gameState.elevatorState.elevatorFloorRatio);
 
-    if (router.isMounted && router.currentRoute.name == RouteId.building.name) {
+    if (isBuildingSceneActive) {
       gameState.update(dt, hasOpenMenu);
     }
 

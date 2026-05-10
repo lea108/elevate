@@ -98,4 +98,16 @@ class TutorialState extends ChangeNotifier {
   }
 
   void update(double elapsed) {}
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_stage': _stage.name,
+      '_counter': _counter,
+    };
+  }
+
+  void applyJson(Map<String, dynamic> data) {
+    _stage = TutorialStage.values.firstWhere((v) => v.name == data['_stage']);
+    _counter = data['_counter'];
+  }
 }

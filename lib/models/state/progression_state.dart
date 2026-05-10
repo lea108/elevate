@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:elevate/models/agent.dart';
 import 'package:elevate/models/game_consts.dart';
-import 'package:elevate/models/state/time_state.dart';
 import 'package:flutter/foundation.dart';
 
 class EndOfDayReport {
@@ -21,6 +20,26 @@ class EndOfDayReport {
     this.nTransportedVeryLate,
     this.buildingEconomy,
   );
+
+  factory EndOfDayReport.fromJson(Map<String, dynamic> data) {
+    return EndOfDayReport(
+      data['day'],
+      data['nTransported'],
+      data['nTransportedLate'],
+      data['nTransportedVeryLate'],
+      data['buildingEconomy'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'day': day,
+      'nTransported': nTransported,
+      'nTransportedLate': nTransportedLate,
+      'nTransportedVeryLate': nTransportedVeryLate,
+      'buildingEconomy': buildingEconomy,
+    };
+  }
 }
 
 class ProgressionState extends ChangeNotifier {
@@ -118,5 +137,31 @@ class ProgressionState extends ChangeNotifier {
   void tutorialEnsureAtLeastOneTechCoin() {
     techCoins = max(1, techCoins);
     notifyListeners();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'tutorial': tutorial,
+      'nTransported': nTransported,
+      'nTransportedLate': nTransportedLate,
+      'nTransportedVeryLate': nTransportedVeryLate,
+      'techCoinProgress': techCoinProgress,
+      'techCoins': techCoins,
+      'buildingProgress': buildingProgress,
+      'endOfDayReport': endOfDayReport?.toJson(),
+    };
+  }
+
+  void applyJson(Map<String, dynamic> data) {
+    tutorial = data['tutorial'];
+    nTransported = data['nTransported'];
+    nTransportedLate = data['nTransportedLate'];
+    nTransportedVeryLate = data['nTransportedVeryLate'];
+    techCoinProgress = data['techCoinProgress'];
+    techCoins = data['techCoins'];
+    buildingProgress = data['buildingProgress'];
+    endOfDayReport = data['endOfDayReport'] != null
+        ? EndOfDayReport.fromJson(data['endOfDayReport'])
+        : null;
   }
 }

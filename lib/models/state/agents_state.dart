@@ -9,6 +9,7 @@ import 'package:elevate/models/state/elevator_state.dart';
 import 'package:elevate/models/state/progression_state.dart';
 import 'package:elevate/models/state/time_state.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
+import 'package:elevate/scenes/building/components/agent.dart';
 import 'package:flame/extensions.dart';
 
 enum AgentUpgrade {
@@ -263,5 +264,30 @@ class AgentsState {
       a.targetLvl = a.roomLvl;
       a.nextStateChange = time.t + delay.removeLast();
     }
+  }
+
+  Map<String, dynamic> toJson() {
+    final List<Map<String, dynamic>> serializedAgents = agents
+        .map((a) => a.toJson())
+        .toList();
+    return {
+      'agents': serializedAgents,
+      'upgrades': upgrades.map((u) => u.name).toList(),
+    };
+  }
+
+  void applyJson(Map<String, dynamic> data) {
+    final List<dynamic> serializedAgents = data['agents'];
+    agents.replaceRange(
+      0,
+      agents.length,
+      serializedAgents.map((a) => AgentData.fromJson(a)).toList(),
+    );
+    upgrades.removeWhere((u) => true);
+    upgrades.addAll([
+      ...data['upgrades'].map(
+        (u) => AgentUpgrade.values.firstWhere((v) => v.name == u),
+      ),
+    ]);
   }
 }

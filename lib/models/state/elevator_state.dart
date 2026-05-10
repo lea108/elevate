@@ -18,7 +18,7 @@ class ElevatorState {
   late int capacity;
 
   /// updated by agents.update
-  late int occupancy;
+  int occupancy = 0;
 
   late double elevatorCarY;
   late bool doorsOpen;
@@ -62,4 +62,37 @@ class ElevatorState {
   }
 
   void update(double elapsed, TimeState time) {}
+
+  Map<String, dynamic> toJson() {
+    return {
+      'elevatorMinFloor': elevatorMinFloor,
+      'elevatorMaxFloor': elevatorMaxFloor,
+      'capacity': capacity,
+      'occupancy': occupancy,
+      'elevatorCarY': elevatorCarY,
+      'doorsOpen': doorsOpen,
+      'dy': dy,
+      'lastUserMoveAt': lastUserMoveAt,
+      'upgrades': upgrades.map((u) => u.name).toList(),
+    };
+  }
+
+  void applyJson(Map<String, dynamic> data) {
+    elevatorMinFloor = data['elevatorMinFloor'];
+    elevatorMaxFloor = data['elevatorMaxFloor'];
+    capacity = data['capacity'];
+    occupancy = data['occupancy'];
+    elevatorCarY = data['elevatorCarY'];
+    doorsOpen = data['doorsOpen'];
+    dy = data['dy'];
+    lastUserMoveAt = data['lastUserMoveAt'];
+    upgrades.clear();
+    upgrades.addAll(
+      Set<ElevatorUpgrade>.from(
+        data['upgrades'].map(
+          (u) => ElevatorUpgrade.values.firstWhere((v) => v.name == u),
+        ),
+      ),
+    );
+  }
 }

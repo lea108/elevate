@@ -1,15 +1,12 @@
-
 import 'dart:async';
 
 import 'package:elevate/models/agent.dart';
 import 'package:flame/components.dart';
 
 class Agent extends SpriteComponent {
-
   AgentData data;
 
   Agent(this.data);
-
 
   @override
   Future<void> onLoad() async {
@@ -19,15 +16,15 @@ class Agent extends SpriteComponent {
 
   @override
   void update(double dt) {
-
-    final visible = [AgentLocation.atRoom, AgentLocation.outside, AgentLocation.onElevator].contains(data.currentLocation);
+    final visible = [
+      AgentLocation.atRoom,
+      AgentLocation.outside,
+      AgentLocation.onElevator,
+    ].contains(data.currentLocation);
 
     opacity = visible ? 0 : 1;
-    if (visible) {
-    }
-
+    if (visible) {}
 
     super.update(dt);
   }
-
 }

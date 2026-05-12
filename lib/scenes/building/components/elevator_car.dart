@@ -271,7 +271,7 @@ class ElevatorCar extends RectangleComponent
       );
       //print("elevator car Y: ${es.elevatorCarY}");
     }
-    position.y = (GameConsts.maxFloorUp - es.elevatorCarY) * yScale - 50;
+    position.y = (GameConsts.maxFloorUp - es.elevatorCarY - 1) * yScale;
 
     es.doorsOpen = stoppedAtLvl;
 

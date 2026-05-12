@@ -4,6 +4,7 @@ import 'package:elevate/game.dart';
 import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/models/projection.dart';
 import 'package:elevate/overlays/overlays.dart';
+import 'package:elevate/scenes/building/components/camera_controller.dart';
 import 'package:elevate/scenes/building/components/elevator_car.dart';
 import 'package:elevate/scenes/building/components/elevator_shaft.dart';
 import 'package:elevate/scenes/building/components/elevator_shaft_top.dart';
@@ -29,6 +30,7 @@ class BuildingScene extends World
   late final ElevatorShaft _elevatorShaft;
   late final ElevatorCar _elevatorCar;
   late final ElevatorShaftTop _elevatorShaftTop;
+  late final CameraController _cameraController;
 
   @override
   FutureOr<void> onLoad() {
@@ -68,6 +70,7 @@ class BuildingScene extends World
       ..position = Vector2(canvasSize.x - mediumPadding, mediumPadding)
       ..anchor = Anchor.topRight
       ..scale = Vector2.all(0.8);
+    _cameraController = CameraController();
 
     addAll([
       _sky,
@@ -78,6 +81,7 @@ class BuildingScene extends World
       _elevatorCar,
       _elevatorShaftTop,
       _timeInfo,
+      _cameraController,
     ]);
 
     return super.onLoad();
@@ -97,8 +101,7 @@ class BuildingScene extends World
       ),
       considerViewport: true,
     );
-    //game.camera.moveTo(Vector2(GameConsts.elevatorX * xScale, GameConsts.maxFloorUp * yScale + 100));
-    game.camera.follow(_elevatorCar, snap: true);
+    game.camera.moveTo(_elevatorCar.position);
 
     game.gameState.buildingState.addListener(onBuildingChange);
     super.onMount();

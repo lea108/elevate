@@ -47,34 +47,36 @@ class SettingsOverlay extends StatelessWidget {
                       label: 'Elevator 1 up/down',
                       setting: settings.gamepadElevator1UpDownAxis,
                     ),
+                    // Planned feature:
                     //GamepadAxisSetting(
                     //  label: 'Elevator 2 up/down',
                     //  setting: settings.gamepadElevator2UpDownAxis,
                     //),
-                    GamepadButtonSetting(
-                      label: 'Activate (A)',
-                      setting: settings.gamepadActivateButton,
-                    ),
-                    GamepadButtonSetting(
-                      label: 'Deselect (B)',
-                      setting: settings.gamepadCancelButton,
-                    ),
-                    GamepadButtonSetting(
-                      label: 'Dpad up',
-                      setting: settings.gamepadDpadUp,
-                    ),
-                    GamepadButtonSetting(
-                      label: 'Dpad right',
-                      setting: settings.gamepadDpadRight,
-                    ),
-                    GamepadButtonSetting(
-                      label: 'Dpad down',
-                      setting: settings.gamepadDpadDown,
-                    ),
-                    GamepadButtonSetting(
-                      label: 'Dpad left',
-                      setting: settings.gamepadDpadLeft,
-                    ),
+                    // These settings are not used anymore:
+                    //GamepadButtonSetting(
+                    //  label: 'Activate (A)',
+                    //  setting: settings.gamepadActivateButton,
+                    //),
+                    //GamepadButtonSetting(
+                    //  label: 'Deselect (B)',
+                    //  setting: settings.gamepadCancelButton,
+                    //),
+                    //GamepadButtonSetting(
+                    //  label: 'Dpad up',
+                    //  setting: settings.gamepadDpadUp,
+                    //),
+                    //GamepadButtonSetting(
+                    //  label: 'Dpad right',
+                    //  setting: settings.gamepadDpadRight,
+                    //),
+                    //GamepadButtonSetting(
+                    //  label: 'Dpad down',
+                    //  setting: settings.gamepadDpadDown,
+                    //),
+                    //GamepadButtonSetting(
+                    //  label: 'Dpad left',
+                    //  setting: settings.gamepadDpadLeft,
+                    //),
                   ],
                 ),
               ),

@@ -101,7 +101,8 @@ class BuildingScene extends World
       ),
       considerViewport: true,
     );
-    game.camera.moveTo(_elevatorCar.position);
+    final cameraX = _cameraController.getTargetCenterX();
+    game.camera.moveTo(Vector2(cameraX, _elevatorCar.position.y + yScale / 2));
 
     game.gameState.buildingState.addListener(onBuildingChange);
     super.onMount();

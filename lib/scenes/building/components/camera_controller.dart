@@ -15,34 +15,17 @@ class CameraController extends Component with HasGameReference<MyGame> {
     bool updateCamera = false;
     var vfCenter = game.camera.viewfinder.position;
 
-    // Update X
+    // X
     final newX = getTargetCenterX();
-    if (newX != vfCenter.y && (newX - vfCenter.y).abs() > 0.01) {
-      vfCenter.x = newX;
-      updateCamera = true;
-    }
+    updateCamera |= newX != vfCenter.x;
 
-    // Update Y
-    final es = game.gameState.elevatorState;
-    final elevatorY1 = (GameConsts.maxFloorUp - es.elevatorCarY - 1) * yScale;
-    final elevatorY2 = elevatorY1 + yScale;
+    // Y
+    final newY = getTargetCenterY();
+    updateCamera |= newY != vfCenter.y;
 
-    final vpSize = game.camera.viewport.size;
-    final zoom = game.camera.viewfinder.zoom;
-    final viewY1 = vfCenter.y - vpSize.y / 2 / zoom;
-    final viewY2 = vfCenter.y + vpSize.y / 2 / zoom;
-    final margin = min(3 * yScale / zoom, (viewY2 - viewY1) * 0.2);
-
-    if (elevatorY1 < viewY1 + margin) {
-      vfCenter.y -= viewY1 + margin - elevatorY1;
-      updateCamera = true;
-    } else if (elevatorY2 > viewY2 - margin) {
-      vfCenter.y += elevatorY2 - (viewY2 - margin);
-      updateCamera = true;
-    }
-
+    // Update camera
     if (updateCamera) {
-      game.camera.moveTo(vfCenter);
+      game.camera.moveTo(Vector2(newX, newY));
     }
   }
 
@@ -67,5 +50,27 @@ class CameraController extends Component with HasGameReference<MyGame> {
     }
 
     return x1 + (x2 - x1) / 2;
+  }
+
+  double getTargetCenterY() {
+    var vfY = game.camera.viewfinder.position.y;
+
+    final es = game.gameState.elevatorState;
+    final elevatorY1 = (GameConsts.maxFloorUp - es.elevatorCarY - 1) * yScale;
+    final elevatorY2 = elevatorY1 + yScale;
+
+    final vpSize = game.camera.viewport.size;
+    final zoom = game.camera.viewfinder.zoom;
+    final viewY1 = vfY - vpSize.y / 2 / zoom;
+    final viewY2 = vfY + vpSize.y / 2 / zoom;
+    final margin = min(3 * yScale / zoom, (viewY2 - viewY1) * 0.2);
+
+    if (elevatorY1 < viewY1 + margin) {
+      vfY -= viewY1 + margin - elevatorY1;
+    } else if (elevatorY2 > viewY2 - margin) {
+      vfY += elevatorY2 - (viewY2 - margin);
+    }
+
+    return vfY;
   }
 }

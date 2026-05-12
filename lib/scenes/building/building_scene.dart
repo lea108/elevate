@@ -60,7 +60,7 @@ class BuildingScene extends World
         (GameConsts.elevatorX +
                 (GameConsts.elevatorShaftW - GameConsts.elevatorCarW) / 2) *
             xScale,
-        (GameConsts.maxFloorUp - es.elevatorCarY) * yScale - 50,
+        (GameConsts.maxFloorUp - es.elevatorCarY - 1) * yScale,
       )
       ..size = Vector2((GameConsts.elevatorCarW) * xScale, 46);
     _elevatorShaftTop = ElevatorShaftTop()

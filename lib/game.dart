@@ -11,7 +11,6 @@ import 'package:elevate/models/state/tutorial_state.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/router.dart';
 import 'package:elevate/scenes/scenes.dart';
-import 'package:elevate/utils/overlay_manager_extension.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/widgets.dart';
@@ -34,7 +33,10 @@ class MyGame extends FlameGame
   Future<void> onLoad() async {
     settingsState = SettingsState();
     audioEffects = AudioEffects();
-    gameState = GameState((overlay, active) => overlays.setActive(overlay, active: active), audioEffects);
+    gameState = GameState(
+      (overlay, active) => overlays.setActive(overlay, active: active),
+      audioEffects,
+    );
     musicComposer = MusicComposer();
     final initialScene =
         _readPersistedScene() ??
@@ -141,18 +143,22 @@ class MyGame extends FlameGame
       router.pushReplacementNamed(route.name);
     }
 
-    overlays.setVisible(GameOverlay.intro.name, scene == GameScene.intro);
-    overlays.setVisible(
+    overlays.setActive(
+      GameOverlay.intro.name,
+      active: scene == GameScene.intro,
+    );
+    overlays.setActive(
       GameOverlay.gameStatusbar.name,
-      scene == GameScene.building,
+      active: scene == GameScene.building,
     );
-    overlays.setVisible(
+    overlays.setActive(
       GameOverlay.touchControl.name,
-      scene == GameScene.building,
+      active: scene == GameScene.building,
     );
-    overlays.setVisible(
+    overlays.setActive(
       GameOverlay.elevatorTutorial.name,
-      scene == GameScene.building &&
+      active:
+          scene == GameScene.building &&
           gameState.tutorialState.stage != TutorialStage.done,
     );
 

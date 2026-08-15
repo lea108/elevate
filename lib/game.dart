@@ -34,7 +34,7 @@ class MyGame extends FlameGame
   Future<void> onLoad() async {
     settingsState = SettingsState();
     audioEffects = AudioEffects();
-    gameState = GameState(overlays, audioEffects);
+    gameState = GameState((overlay, active) => overlays.setActive(overlay, active: active), audioEffects);
     musicComposer = MusicComposer();
     final initialScene =
         _readPersistedScene() ??

@@ -9,7 +9,6 @@ import 'package:elevate/models/state/elevator_state.dart';
 import 'package:elevate/models/state/progression_state.dart';
 import 'package:elevate/models/state/time_state.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
-import 'package:elevate/scenes/building/components/agent.dart';
 import 'package:flame/extensions.dart';
 
 enum AgentUpgrade {

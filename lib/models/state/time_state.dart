@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:elevate/utils/color_extensions.dart';
 import 'package:elevate/utils/sky_color.dart';
-import 'package:flame/extensions.dart';
 import 'package:flutter/material.dart';
 
 class TimeState extends ChangeNotifier {

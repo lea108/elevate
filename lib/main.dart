@@ -13,6 +13,7 @@ FocusNode rootFocusNode = FocusNode();
 late final SharedPreferencesWithCache sharedPreferences;
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   sharedPreferences = await SharedPreferencesWithCache.create(
     cacheOptions: .new(),
   );

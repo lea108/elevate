@@ -1,14 +1,11 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:elevate/game.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
-import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/theme/palette.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:elevate/utils/platform_adaptive.dart';
 import 'package:flutter/material.dart';
-import 'package:gamepads/gamepads.dart';
 
 class ElevatorTutorialOverlay extends StatefulWidget {
   final MyGame game;

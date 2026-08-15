@@ -5,7 +5,6 @@ import 'package:elevate/game.dart';
 import 'package:flame/cache.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
 
 class Grass extends PositionComponent with HasGameReference<MyGame> {
   SpriteBatch? _batch;

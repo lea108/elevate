@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:elevate/game.dart';
 import 'package:elevate/utils/format.dart';

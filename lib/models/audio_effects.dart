@@ -20,7 +20,7 @@ class AudioEffects {
   static const _elevatorNotes = ['b2', 'c3', 'd3', 'e3', 'f3'];
 
   /// Map from note to pitchDirection to clip
-  Map<String, Map<int, AudioClip>> _elevatorClips = {};
+  final Map<String, Map<int, AudioClip>> _elevatorClips = {};
 
   late final MultiPlay _player;
 

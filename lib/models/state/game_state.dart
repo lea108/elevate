@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:elevate/main.dart';
@@ -13,11 +12,9 @@ import 'package:elevate/models/state/tech_tree_state.dart';
 import 'package:elevate/models/state/time_state.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
 import 'package:elevate/overlays/overlays.dart';
-import 'package:flame/game.dart';
-import 'package:flame/src/game/overlay_manager.dart';
 
 class GameState {
-  late OverlayManager _overlays;
+  late final void Function(String overlay, bool active) _setOverlayActive;
   late TimeState timeState;
   late InputState inputState;
   late BuildingState buildingState;
@@ -30,9 +27,9 @@ class GameState {
   TutorialStage? lastTutorialStage;
   late int lastDay;
 
-  AudioEffects _audioEffects;
+  final AudioEffects _audioEffects;
 
-  GameState(this._overlays, this._audioEffects) {
+  GameState(this._setOverlayActive, this._audioEffects) {
     reset();
   }
 
@@ -86,7 +83,7 @@ class GameState {
         TutorialStage.done,
         TutorialStage.finalNotes,
       ].contains(tutorialState.stage)) {
-        _overlays.add(GameOverlay.endOfDayReport.name);
+        _setOverlayActive(GameOverlay.endOfDayReport.name, true);
       } else {
         // just ignore the report during tutorial
         progressionState.endOfDayReport = null;
@@ -122,7 +119,7 @@ class GameState {
         progressionState.buildingProgress = 25;
       }
       if (tutorialState.stage == .done) {
-        _overlays.remove(GameOverlay.elevatorTutorial.name);
+        _setOverlayActive(GameOverlay.elevatorTutorial.name, false);
         progressionState.buildingProgress = 0;
       }
     }

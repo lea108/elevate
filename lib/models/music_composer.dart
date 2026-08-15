@@ -2,13 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:collection/collection.dart';
 import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:elevate/models/multi_play.dart';
 import 'package:elevate/utils/audio_cache.dart';
 import 'package:flame/extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MusicPice {
   final String fileName;
@@ -48,11 +45,11 @@ class MusicComposer {
 
   double t = 0;
   double _generatedTo = -1;
-  int _nextPlayerI = 0;
+  final int _nextPlayerI = 0;
 
   final List<StreamSubscription> _unsubscribe = [];
 
-  List<PlayClip> _schedule = [];
+  final List<PlayClip> _schedule = [];
   //Map<int, List<PlayClip>> _schedule = {};
 
   MusicComposer() {
@@ -211,11 +208,11 @@ class MusicComposer {
     _generatedTo += clip.activeLengthS.toDouble() - 0.5;
   }
 
-  _scheduleClip(MusicPice clip, double startTime) {
+  void _scheduleClip(MusicPice clip, double startTime) {
     _schedule.add(PlayClip(clip, startTime, startTime + clip.totalLengthS));
   }
 
-  _startPlayClips() async {
+  Future<void> _startPlayClips() async {
     for (var c in _schedule) {
       if (!c.started && t >= c.startTime && c.clip != null) {
         c.started = true;

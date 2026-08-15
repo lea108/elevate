@@ -1,14 +1,12 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:dart_random_choice/dart_random_choice.dart';
 import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/models/room_defs.dart';
 import 'package:elevate/models/state/elevator_state.dart';
 import 'package:elevate/models/state/progression_state.dart';
 import 'package:elevate/models/state/time_state.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 class RoomData {
@@ -378,7 +376,7 @@ class BuildingState extends ChangeNotifier {
 
 final midX = (GameConsts.worldWidth / 2).floor();
 const buildingWidth = 20;
-late final buildingStartX = midX - 10;
+final buildingStartX = midX - 10;
 
 RoomData generateOffice(bool rented, int roomIndex, int roomW) {
   final idx = rented ? Random().nextInt(3) : 0;

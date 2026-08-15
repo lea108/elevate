@@ -335,7 +335,6 @@ class _Button extends StatelessWidget {
   final void Function() onPressed;
 
   const _Button({
-    super.key,
     required this.onPressed,
     this.roundedCorner = const {},
     required this.child,

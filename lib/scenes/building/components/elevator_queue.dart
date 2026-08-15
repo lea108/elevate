@@ -1,10 +1,7 @@
-import 'dart:async';
-import 'dart:math';
 
 import 'package:elevate/game.dart';
 import 'package:elevate/models/agent.dart';
 import 'package:elevate/models/projection.dart';
-import 'package:elevate/scenes/building/components/agent.dart';
 import 'package:elevate/scenes/building/components/agent_sprite.dart';
 import 'package:flame/components.dart';
 
@@ -43,10 +40,6 @@ class ElevatorQueue extends PositionComponent with HasGameReference<MyGame> {
     }
   }
 
-  @override
-  FutureOr<void> onLoad() {
-    return super.onLoad();
-  }
 
   @override
   void update(double dt) {

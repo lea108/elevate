@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:elevate/game.dart';
 import 'package:flame/components.dart';

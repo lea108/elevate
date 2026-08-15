@@ -48,8 +48,15 @@ class CameraController extends Component with HasGameReference<MyGame> {
       x1 = min(x1, buildingX1 * xScale);
       x2 = max(x2, buildingX2 * xScale);
     }
+    final buildingCenterX = x1 + (x2 - x1) / 2;
 
-    return x1 + (x2 - x1) / 2;
+    // if building is too wide to fit on screen, ensure elevator is visible
+    final viewportWidth = game.camera.viewport.size.x;
+    final viewX1 = buildingCenterX - viewportWidth / 2;
+    if (elevatorX1 < viewX1) {
+      return elevatorX1 + viewportWidth / 2 - 5;
+    }
+    return buildingCenterX;
   }
 
   double getTargetCenterY() {

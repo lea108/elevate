@@ -25,7 +25,7 @@ class Palette {
 
   static final tutorialCardBg = Colors.brown[800]!;
   static final techTreeTechLane = Color.lerp(
-    Colors.amber.shade200,
+    Color.lerp(Colors.orange, Colors.grey, 0.7),
     tutorialCardBg,
     0.5,
   )!;

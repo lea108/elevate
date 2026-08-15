@@ -13,7 +13,7 @@ import 'package:elevate/scenes/building/components/elevator_touch_control.dart';
 import 'package:elevate/utils/speed.dart';
 import 'package:flame/components.dart';
 import 'package:flame_gamepads/flame_gamepads.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:gamepads/gamepads.dart';
 

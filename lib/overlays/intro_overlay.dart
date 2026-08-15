@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:elevate/theme/palette.dart';
 import 'package:elevate/utils/platform_adaptive.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class IntroOverlay extends StatelessWidget {
   const IntroOverlay({super.key});

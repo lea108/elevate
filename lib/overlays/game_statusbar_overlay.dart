@@ -7,7 +7,7 @@ import 'package:elevate/utils/format.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:elevate/utils/sky_color.dart';
 import 'package:flame/extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class GameStatusbarOverlay extends StatelessWidget {
   final MyGame game;

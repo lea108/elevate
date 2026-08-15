@@ -6,7 +6,7 @@ import 'package:elevate/overlays/widgets/double_slider_setting.dart';
 import 'package:elevate/overlays/widgets/gamepad_axis_settings.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
 import 'package:elevate/theme/theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class SettingsOverlay extends StatelessWidget {
   final MyGame game;

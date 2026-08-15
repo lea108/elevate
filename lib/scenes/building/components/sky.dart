@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:elevate/game.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class Sky extends RectangleComponent with HasGameReference<MyGame> {
 

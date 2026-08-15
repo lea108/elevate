@@ -4,7 +4,7 @@ import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
 import 'package:elevate/theme/theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class InGameMenuOverlay extends StatelessWidget {

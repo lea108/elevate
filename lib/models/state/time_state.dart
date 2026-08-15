@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:elevate/utils/color_extensions.dart';
 import 'package:elevate/utils/sky_color.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class TimeState extends ChangeNotifier {
   late bool _menuPaused;

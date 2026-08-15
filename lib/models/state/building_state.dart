@@ -7,7 +7,7 @@ import 'package:elevate/models/state/elevator_state.dart';
 import 'package:elevate/models/state/progression_state.dart';
 import 'package:elevate/models/state/time_state.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class RoomData {
   final int startX;

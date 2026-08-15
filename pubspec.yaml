@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.11.1
+  sdk: ^3.13.0
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,16 +34,18 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  gamepads: ^0.1.10+1
   gamepads_platform_interface: any
   flame: ^1.36.0
   collection: ^1.19.1
   url_launcher: ^6.3.2
   audioplayers: ^6.6.0
   dart_random_choice: ^0.2.0
-  flame_gamepads: ^0.1.1
-  flutter_gamepads: ^0.1.11
+  gamepads: ^0.1.10+5
+  flame_gamepads: ^0.1.2
+  flutter_gamepads: ^0.1.11+4
   shared_preferences: ^2.5.5
+  web: ^1.1.1
+  material_ui: ^1.0.0
 
 #dependency_overrides:
 #  gamepads_windows:

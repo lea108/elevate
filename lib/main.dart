@@ -3,7 +3,7 @@ import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:elevate/utils/brightness_extensions.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gamepads/flutter_gamepads.dart';
 import 'package:shared_preferences/shared_preferences.dart';

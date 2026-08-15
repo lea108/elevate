@@ -3,7 +3,7 @@ import 'package:elevate/theme/palette.dart';
 import 'package:elevate/theme/responsive_layout.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:flame/extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 enum RoundedCorner {
   bottomLeft,

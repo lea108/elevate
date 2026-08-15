@@ -1,7 +1,7 @@
 import 'package:elevate/models/state/tech_tree_state.dart';
 import 'package:elevate/theme/palette.dart';
 import 'package:elevate/theme/theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class TechCard extends StatelessWidget {
   final TechData data;

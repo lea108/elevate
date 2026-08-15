@@ -3,7 +3,7 @@ import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/overlays/widgets/economy_indicator.dart';
 import 'package:elevate/theme/theme.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Reactively shows EndOfDayReport dialog when ProgressState updates with a
 /// new EndOfDayReport.

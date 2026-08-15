@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:elevate/models/state/settings_state.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:gamepads/gamepads.dart';
 
 class GamepadAxisSetting extends StatefulWidget {

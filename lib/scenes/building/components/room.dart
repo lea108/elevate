@@ -4,7 +4,7 @@ import 'package:elevate/game.dart';
 import 'package:elevate/models/state/building_state.dart';
 import 'package:elevate/models/room_defs.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class Room extends SpriteComponent with HasGameReference<MyGame> {
   int floor;

@@ -9,7 +9,7 @@ import 'package:elevate/scenes/building/components/elevator_floor_destination_in
 import 'package:elevate/scenes/building/components/elevator_queue.dart';
 import 'package:elevate/scenes/building/components/elevator_up_down_button.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ElevatorShaft extends RectangleComponent with HasGameReference<MyGame> {
   final Map<int, ElevatorQueue> _elevatorQueues = {};

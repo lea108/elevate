@@ -7,7 +7,7 @@ import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/overlays/widgets/tech_card.dart';
 import 'package:elevate/utils/dialog_backdrop.dart';
 import 'package:elevate/theme/theme.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class TechTreeOverlay extends StatefulWidget {
   final MyGame game;

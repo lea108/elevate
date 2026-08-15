@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:elevate/models/state/tech_tree_state.dart';
 import 'package:elevate/theme/palette.dart';
 import 'package:elevate/theme/theme.dart';
@@ -56,8 +58,28 @@ class TechCard extends StatelessWidget {
               if (isFirstInTechBranch && isVertical)
                 SizedBox(
                   width: 30,
-                  child: Center(
-                    child: Icon(Icons.chevron_right),
+                  height: _techLineWidth,
+                  child: OverflowBox(
+                    alignment: Alignment.centerLeft,
+                    maxWidth: 32,
+                    child: Container(
+                      height: _techLineWidth,
+                      width: 32,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.lerp(
+                              Colors.transparent,
+                              Palette.techTreeTechLane,
+                              0.3,
+                            )!,
+                            Palette.techTreeTechLane,
+                            Palette.techTreeTechLane,
+                          ],
+                          stops: [0.0, 0.65, 1.0],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               if (isVertical && !isFirstInTechBranch) SizedBox(width: 30),
@@ -67,8 +89,12 @@ class TechCard extends StatelessWidget {
                 child: ElevatedButton(
                   style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
                     elevation: WidgetStatePropertyAll(elevation),
-                    backgroundColor: WidgetStatePropertyAll(backgroundColor),
-                    foregroundColor: WidgetStatePropertyAll(foregroundColor),
+                    backgroundColor: WidgetStatePropertyAll(
+                      backgroundColor,
+                    ),
+                    foregroundColor: WidgetStatePropertyAll(
+                      foregroundColor,
+                    ),
                     padding: WidgetStatePropertyAll(
                       EdgeInsetsGeometry.all(
                         narrowPadding * 2,
@@ -84,7 +110,10 @@ class TechCard extends StatelessWidget {
                           color: Palette.selectedTechBorder,
                         );
                       }
-                      return BorderSide(width: 3, color: Colors.transparent);
+                      return BorderSide(
+                        width: 3,
+                        color: Colors.transparent,
+                      );
                     }),
                   ),
                   onPressed: canActivate ? onPressed : null,
@@ -145,8 +174,10 @@ class TechCard extends StatelessWidget {
                 width: 30,
                 height: isVertical ? 30 : null,
                 child: Center(
-                  child: Icon(
-                    isVertical ? Icons.expand_more : Icons.chevron_right,
+                  child: Container(
+                    width: isVertical ? _techLineWidth : 30,
+                    height: isVertical ? 30 : _techLineWidth,
+                    color: Palette.techTreeTechLane,
                   ),
                 ),
               ),
@@ -166,3 +197,5 @@ class TechCard extends StatelessWidget {
     );
   }
 }
+
+const _techLineWidth = 8.0;

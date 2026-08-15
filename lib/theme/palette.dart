@@ -1,4 +1,3 @@
-
 import 'package:material_ui/material_ui.dart';
 
 class Palette {
@@ -25,6 +24,11 @@ class Palette {
   )!;
 
   static final tutorialCardBg = Colors.brown[800]!;
+  static final techTreeTechLane = Color.lerp(
+    Colors.amber.shade200,
+    tutorialCardBg,
+    0.5,
+  )!;
 
   static final groundColor = Colors.brown[900]!;
 }

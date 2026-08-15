@@ -45,10 +45,11 @@ class InGameMenuOverlay extends StatelessWidget {
                         onPressed: restartGame,
                         child: Text('Restart Game'),
                       ),
-                      TextButton(
-                        onPressed: github,
-                        child: Text('GitHub'),
-                      ),
+                      if (false)
+                        TextButton(
+                          onPressed: github,
+                          child: Text('GitHub'),
+                        ),
                     ]
                     .mapIndexed(
                       (i, btn) => i > 0

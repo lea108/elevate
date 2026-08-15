@@ -40,7 +40,7 @@ class InGameMenuOverlay extends StatelessWidget {
                         onPressed: settings,
                         child: Text('Settings'),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       TextButton(
                         onPressed: restartGame,
                         child: Text('Restart Game'),

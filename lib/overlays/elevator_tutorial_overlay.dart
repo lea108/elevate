@@ -6,6 +6,7 @@ import 'package:elevate/models/state/tutorial_state.dart';
 import 'package:elevate/overlays/overlays.dart';
 import 'package:elevate/theme/palette.dart';
 import 'package:elevate/theme/theme.dart';
+import 'package:elevate/utils/platform_adaptive.dart';
 import 'package:flutter/material.dart';
 import 'package:gamepads/gamepads.dart';
 
@@ -116,19 +117,26 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
             textAlign: .center,
           ),
           SizedBox(height: mediumPadding),
-          Text(bodyText1),
-          SizedBox(height: 8),
-          AspectRatio(
-            aspectRatio: 2,
-            child: Image.asset(
-              'assets/images/gamepad_elevator.png',
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'The game also works with keyboard using W-S or arrow up/down keys.',
-          ),
-          Image.asset('assets/images/keys.png'),
+          ...isDesktop
+              ? [
+                  Text(bodyTextGamepad),
+                  SizedBox(height: 8),
+                  AspectRatio(
+                    aspectRatio: 2,
+                    child: Image.asset(
+                      'assets/images/gamepad_elevator.png',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(bodyTextKeyboard),
+                  Image.asset('assets/images/keys.png'),
+                ]
+              : [
+                  // !desktop
+                  Text(bodyTextTouchSlider),
+                  SizedBox(height: 10),
+                  Text(bodyTextTouchTap),
+                ],
           SizedBox(height: 30),
           Text('Objective:'),
           Text('Transport a person to the upper floor'),
@@ -162,7 +170,7 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
             textAlign: .center,
           ),
           SizedBox(height: mediumPadding),
-          Text(bodyText3),
+          Text(isDesktop ? bodyText3desktop : bodyText3mobile),
           SizedBox(height: 30),
           Text('Objective:'),
           Text('Buy a tech upgrade'),
@@ -254,8 +262,14 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
 
 // dart format off
 const title1 = 'Elevators 🛗';
-const bodyText1 =
+const bodyTextGamepad =
 """Use the left stick on your gamepad to move the elevator up or down.""";
+const bodyTextKeyboard =
+"""The game also works with keyboard using W-S or arrow up/down keys.""";
+const bodyTextTouchSlider =
+"""Use the slider control in the lower right corner to move the elevator up or down.""";
+const bodyTextTouchTap =
+"""Alternatively, tap/hold above the elevator to make it go up, or below it to make it go down.""";
 
 const title2 = 'Move people and be rewarded';
 const bodyText2 =
@@ -265,7 +279,7 @@ Get people to their destinations and be awarded with tech coins (⭐) and boost 
 """;
 
 const title3 = 'Get your reward';
-const bodyText3 =
+const bodyText3desktop =
 """
 A good first tech upgrade is the Elevator floor indicators.
 
@@ -274,6 +288,12 @@ Gamepad:
 
 Keyboard:
 - Use your mouse to click the ⭐ in the statusbar to open Tech tree
+""";
+const bodyText3mobile =
+"""
+A good first tech upgrade is the Elevator floor indicators.
+
+Tap on the ⭐ in the statusbar to open Tech tree
 """;
 
 const title4 = 'Where do people want to go?';

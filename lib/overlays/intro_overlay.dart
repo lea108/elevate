@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:elevate/theme/palette.dart';
+import 'package:elevate/utils/platform_adaptive.dart';
 import 'package:flutter/material.dart';
 
 class IntroOverlay extends StatelessWidget {
@@ -55,7 +56,8 @@ class IntroOverlay extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Press any key to continue',
+                    isDesktop ?
+                    'Press any key to continue' : 'Tap to continue',
                     style: textTheme.titleLarge!.copyWith(color: fgColor),
                   ),
                   SizedBox(height: mqSize.height * 0.08),

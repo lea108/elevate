@@ -11,7 +11,8 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
   int roomIndex;
   RoomData roomData;
   bool addRoof;
-  late RectangleComponent _overlay;
+  bool _lightsOn = false;
+  Rect _overlayRect = Rect.zero;
 
   Room(this.floor, this.roomIndex, this.roomData, this.addRoof);
 
@@ -23,19 +24,20 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
   @override
   Future<void> onLoad() async {
     sprite = await Sprite.load(roomData.roomDef.spriteName);
-    bleed = 0.9;
-
-    _overlay = RectangleComponent()
-      ..position = Vector2(-bleed!, -bleed!)
-      ..size = size + Vector2(bleed! * 2, bleed! * 2);
-    await addAll([_overlay]);
+    bleed = 1.1;
+    _overlayRect = Rect.fromLTWH(
+      -bleed!,
+      -bleed!,
+      size.x + bleed! * 2,
+      size.y + bleed! * 2,
+    );
 
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-    final lightsOn = switch (roomData.roomDef.roomType) {
+    _lightsOn = switch (roomData.roomDef.roomType) {
       RoomType.empty => true,
       RoomType.office => roomData.nPeopleInRoom > 0,
       RoomType.groundFloor => game.gameState.timeState.timeOfDay > 5 * 3600,
@@ -43,9 +45,6 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
         game.gameState.timeState.timeOfDay > 6 * 3600 &&
             game.gameState.timeState.timeOfDay < 23 * 3600,
     };
-    _overlay.setColor(
-      lightsOn ? Colors.transparent : Color.fromARGB(150, 0, 0, 0),
-    );
     super.update(dt);
   }
 
@@ -57,6 +56,12 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
         Offset(-bleed!, -1),
         Offset(size.x + bleed!, -1),
         roofPaint,
+      );
+    }
+    if (!_lightsOn) {
+      canvas.drawRect(
+        _overlayRect,
+        Paint()..color = const Color.fromARGB(150, 0, 0, 0),
       );
     }
   }

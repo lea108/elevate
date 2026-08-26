@@ -208,12 +208,15 @@ class AgentsState {
     }
 
     // Probability to use car (if possible)
-    double carRate = upgrades.contains(AgentUpgrade.carFreePolicy) ? 0.05 : 0.4;
+    double carRate = upgrades.contains(AgentUpgrade.carFreePolicy) ? 0.15 : 0.7;
 
     final List<int> choices = [0, ...carLevels];
     final List<double> weights = [
       1 - carRate,
-      ...List<double>.generate(carLevels.length, (i) => 1 / carLevels.length),
+      ...List<double>.generate(
+        carLevels.length,
+        (i) => carRate / carLevels.length,
+      ),
     ];
 
     return randomChoice(choices, weights);
@@ -244,6 +247,7 @@ class AgentsState {
     TimeState time,
     BuildingState building,
   ) {
+    print('tutorial: prep for tutorial step both floors');
     final a1 = agents.firstWhereOrNull(
       ((a) => a.roomLvl == 1 && a.currentLocation != .onElevator),
     );

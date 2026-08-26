@@ -5,16 +5,14 @@ import 'package:elevate/utils/audio_cache.dart';
 
 class MultiPlay {
   final List<AudioPlayer> _players = [];
-  final List<String> _fileNames = [];
 
   final List<StreamSubscription> _unsubscribe = [];
 
   MultiPlay(String prefix) {
-    for (var i in [0, 1, 2]) {
+    for (var i in [0, 1, 2, 4]) {
       final player = AudioPlayer(playerId: '$prefix-player-$i');
       player.audioCache = rootAudioCache;
       _players.add(player);
-      _fileNames.add('');
     }
   }
 
@@ -26,15 +24,8 @@ class MultiPlay {
   }
 
   Future<void> play(String fileName) async {
-    final i = _fileNames.indexOf(fileName);
-    if (i != -1) {
-      _players[i].resume();
-      return;
-    }
-
     final iFree = _players.indexWhere((p) => p.state != .playing);
     if (iFree != -1) {
-      _fileNames[iFree] = fileName;
       await _players[iFree].setSource(AssetSource(fileName));
       await _players[iFree].resume();
       return;

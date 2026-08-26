@@ -62,7 +62,7 @@ class AgentData {
     return {
       'roomLvl': roomLvl,
       'roomIndex': roomIndex,
-      'currentLvl': roomLvl,
+      'currentLvl': currentLvl,
       'nextStateChange': nextStateChange,
       'travelStartAt': travelStartAt,
       'lateness': lateness?.name,

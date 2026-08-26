@@ -1,8 +1,21 @@
+import 'dart:math';
+
+import 'package:elevate/models/furniture_defs.dart';
+import 'package:elevate/models/furniture_placement.dart';
+import 'package:flame/game.dart';
+
 enum RoomType {
   empty,
   office,
   groundFloor,
   garage,
+}
+
+class FurnitureRef {
+  final FurnitureDef furniture;
+  final Vector2 offset;
+
+  const FurnitureRef(this.furniture, this.offset);
 }
 
 class RoomDef {

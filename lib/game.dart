@@ -53,7 +53,7 @@ class MyGame extends FlameGame
     // Restore state
     _lifecycleRestore();
 
-    changeScene(initialScene);
+    await changeScene(initialScene);
   }
 
   @override
@@ -69,7 +69,7 @@ class MyGame extends FlameGame
   }
 
   @override
-  void lifecycleStateChange(AppLifecycleState state) {
+  Future<void> lifecycleStateChange(AppLifecycleState state) async {
     super.lifecycleStateChange(state);
     if (!_initialized) {
       return;

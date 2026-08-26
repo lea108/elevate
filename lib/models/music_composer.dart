@@ -26,16 +26,15 @@ class MusicPice {
 }
 
 class PlayClip {
-  final MusicPice? clip;
+  final MusicPice clip;
   final double startTime;
-  final double endTime;
 
   bool started = false;
 
-  PlayClip(this.clip, this.startTime, this.endTime);
+  PlayClip(this.clip, this.startTime);
 
-  double get activeEnd => startTime + (clip?.activeLengthS ?? 0);
-  double get endtime => startTime + endTime;
+  double get activeEnd => startTime + clip.activeLengthS;
+  double get endTime => startTime + clip.totalLengthS;
 }
 
 class MusicComposer {
@@ -204,12 +203,13 @@ class MusicComposer {
     }
 
     final clip = randomChoice(_clips, weights);
-    _scheduleClip(clip, _generatedTo);
-    _generatedTo += clip.activeLengthS.toDouble() - 0.5;
+    final startAt = max(t, _generatedTo);
+    _scheduleClip(clip, startAt);
+    _generatedTo = startAt + clip.activeLengthS.toDouble() - 0.5;
   }
 
   void _scheduleClip(MusicPice clip, double startTime) {
-    _schedule.add(PlayClip(clip, startTime, startTime + clip.totalLengthS));
+    _schedule.add(PlayClip(clip, startTime));
   }
 
   Future<void> _startPlayClips() async {

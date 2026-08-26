@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:elevate/game.dart';
+import 'package:elevate/models/furniture_defs.dart';
 import 'package:elevate/models/state/building_state.dart';
 import 'package:elevate/models/room_defs.dart';
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:material_ui/material_ui.dart';
 
 class Room extends SpriteComponent with HasGameReference<MyGame> {
@@ -58,6 +60,13 @@ class Room extends SpriteComponent with HasGameReference<MyGame> {
         roofPaint,
       );
     }
+    for (var f in roomData.furniture) {
+      final sprite = furnitureSprites[f.furniture.furnitureId];
+      if (sprite != null) {
+        sprite.render(canvas, position: f.offset);
+      }
+    }
+    // Last draw darkness ontop if light is off
     if (!_lightsOn) {
       canvas.drawRect(
         _overlayRect,

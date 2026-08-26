@@ -1,17 +1,22 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:dart_random_choice/dart_random_choice.dart';
+import 'package:elevate/models/furniture_defs.dart';
+import 'package:elevate/models/furniture_placement.dart';
 import 'package:elevate/models/game_consts.dart';
 import 'package:elevate/models/room_defs.dart';
 import 'package:elevate/models/state/elevator_state.dart';
 import 'package:elevate/models/state/progression_state.dart';
 import 'package:elevate/models/state/time_state.dart';
 import 'package:elevate/models/state/tutorial_state.dart';
+import 'package:flame/game.dart';
 import 'package:material_ui/material_ui.dart';
 
 class RoomData {
   final int startX;
   final RoomDef roomDef;
+  List<FurnitureRef> furniture = [];
 
   bool rented;
   int nEmployees;
@@ -26,21 +31,38 @@ class RoomData {
     this.rented = false,
     this.nEmployees = 0,
     this.nPeopleInRoom = 0,
+    this.furniture = const [],
   });
 
   factory RoomData.fromJson(
     Map<String, dynamic> jsonData,
     Map<RoomId, RoomDef> roomDefs,
+    int lvl,
   ) {
     final RoomId roomId = RoomId.values.firstWhere(
       (v) => v.name == jsonData['roomDefId'],
     );
+    final roomDef = roomDefs[roomId]!;
+    late final List<FurnitureRef> furniture;
+    if (jsonData['furniture'] != null) {
+      final furnitureJson = jsonData['furniture'];
+      furniture = List<FurnitureRef>.generate(furnitureJson.length, (i) {
+        final furnitureId = FurnitureId.values.firstWhere(
+          (f) => f.name == furnitureJson[i][0],
+        );
+        final offset = Vector2(furnitureJson[i][1], furnitureJson[i][2]);
+        return FurnitureRef(furnitureDefs[furnitureId]!, offset);
+      });
+    } else {
+      furniture = generateRoomFurniture(roomDef.roomType, roomDef.id, lvl);
+    }
     return RoomData(
       jsonData['startX'],
-      roomDefs[roomId]!,
+      roomDef,
       rented: jsonData['rented'],
       nEmployees: jsonData['nEmployees'],
       nPeopleInRoom: jsonData['nPeopleInRoom'],
+      furniture: furniture,
     );
   }
 
@@ -51,6 +73,11 @@ class RoomData {
       'rented': rented,
       'nEmployees': nEmployees,
       'nPeopleInRoom': nPeopleInRoom,
+      'furniture': furniture
+          .map(
+            (f) => [f.furniture.furnitureId.name, f.offset.x, f.offset.y],
+          )
+          .toList(),
     };
   }
 }
@@ -118,7 +145,7 @@ class BuildingState extends ChangeNotifier {
         final rented = tutorialState.stage != .done
             ? lvl > 1
             : i > 0 || lvl > 1;
-        return generateOffice(rented, i, roomW);
+        return generateOffice(rented, i, roomW, lvl);
       });
     }
 
@@ -144,7 +171,7 @@ class BuildingState extends ChangeNotifier {
         if (maxCount != -1 && n > maxCount) return r;
         if (!r.rented && r.roomDef.roomType == .office) {
           n += 1;
-          return generateOffice(true, i, r.roomDef.width);
+          return generateOffice(true, i, r.roomDef.width, lvl);
         }
         return r;
       }).toList();
@@ -184,7 +211,7 @@ class BuildingState extends ChangeNotifier {
       // Add office on first floor
       final firstOfficeFloor = rooms[1]!;
       firstOfficeFloor.add(
-        generateOffice(rented, firstOfficeFloor.length, officeRoom.width),
+        generateOffice(rented, firstOfficeFloor.length, officeRoom.width, 1),
       );
       n += 1;
     }
@@ -199,7 +226,7 @@ class BuildingState extends ChangeNotifier {
           int availableWidth = baseX2 - floorRooms.last.endX;
           if (availableWidth >= officeWidth) {
             floorRooms.add(
-              generateOffice(rented, rooms[lvl]!.length, officeWidth),
+              generateOffice(rented, rooms[lvl]!.length, officeWidth, lvl),
             );
             n += 1;
           }
@@ -210,7 +237,7 @@ class BuildingState extends ChangeNotifier {
             maxCount - n,
           );
           final floorRooms = List<RoomData>.generate(nGen, (i) {
-            return generateOffice(rented, i, officeWidth);
+            return generateOffice(rented, i, officeWidth, lvl);
           });
           rooms[lvl] = floorRooms;
           n += nGen;
@@ -364,13 +391,14 @@ class BuildingState extends ChangeNotifier {
     for (String lvl in serializedRooms.keys) {
       final List<dynamic> serializedLevelRooms = serializedRooms[lvl];
       rooms[int.parse(lvl)] = serializedLevelRooms
-          .map((r) => RoomData.fromJson(r, roomDefs))
+          .map((r) => RoomData.fromJson(r, roomDefs, int.parse(lvl)))
           .toList();
     }
     if (rooms.keys.isNotEmpty) {
       nFloorsUp = max(0, rooms.keys.max);
       nFloorsDown = max(0, -rooms.keys.min);
     }
+    notifyListeners();
   }
 }
 
@@ -378,10 +406,9 @@ final midX = (GameConsts.worldWidth / 2).floor();
 const buildingWidth = 20;
 final buildingStartX = midX - 10;
 
-RoomData generateOffice(bool rented, int roomIndex, int roomW) {
-  final idx = rented ? Random().nextInt(3) : 0;
+RoomData generateOffice(bool rented, int roomIndex, int roomW, int lvl) {
   final roomId = rented
-      ? [RoomId.office1, RoomId.office2, RoomId.office3][idx]
+      ? randomChoice<RoomId>([.office1, .office2, .office3], [0.2, 0.7, 0.1])
       : RoomId.forRent;
   final roomDef = roomDefs[roomId]!;
   return RoomData(
@@ -389,5 +416,6 @@ RoomData generateOffice(bool rented, int roomIndex, int roomW) {
     roomDef,
     rented: rented,
     nEmployees: rented ? 4 : 0,
+    furniture: generateRoomFurniture(roomDef.roomType, roomId, lvl),
   );
 }

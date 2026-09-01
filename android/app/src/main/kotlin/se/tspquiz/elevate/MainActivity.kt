@@ -1,4 +1,4 @@
-package se.tspquiz.elevate.elevate
+package se.tspquiz.elevate
 
 import io.flutter.embedding.android.FlutterActivity
 

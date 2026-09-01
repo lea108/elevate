@@ -1,6 +1,6 @@
-# Elevate
+# Elevator Operator
 
-Elevate in this game you operate an elevator to move people to their destinations. If you can bring people in time to their destinations (or just a bit late) it will improve the building economy which on midnight will contribute to the building growing taller.
+In this game you operate an elevator to move people to their destinations. If you can bring people in time to their destinations (or just a bit late) it will improve the building economy which on midnight will contribute to the building growing taller.
 
 Taller building with more offices gives you more people to transport. As you go, you also will gain tech coins which can be used to upgrade the elevator so you can support the growing demands.
 

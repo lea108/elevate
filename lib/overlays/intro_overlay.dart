@@ -32,7 +32,7 @@ class IntroOverlay extends StatelessWidget {
                 children: [
                   SizedBox(height: mqSize.height * 0.08),
                   Text(
-                    'Elevate',
+                    'Elevator Operator',
                     style: textTheme.displayMedium!.copyWith(color: fgColor),
                   ),
                   SizedBox(height: 30),

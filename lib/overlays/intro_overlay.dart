@@ -42,15 +42,6 @@ class IntroOverlay extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(introBody),
-                          SizedBox(height: 50),
-                          /*Text(
-                            'Back story',
-                            style: textTheme.titleLarge!.copyWith(
-                              color: fgColor,
-                            ),
-                          ),*/
-                          //SizedBox(height: 5),
-                          //Text(backStoryBody),
                         ],
                       ),
                     ),
@@ -75,14 +66,7 @@ class IntroOverlay extends StatelessWidget {
 const introBody =
 '''In this game you work as an elevator operator.
 
-Making the elevator go up and down so that people can get to their destination floor.''';
-
-const backStoryBody =
-'''Your big brother is a real estate businessman but does not have the time to operate the elevator in their new high aiming property development.
-
-So you are offered to operate the elevator and will be awarded tech coins⭐ from transporting people 🧍 in time to their destination floor.
-
-Helping your brother out, perhaps will be good for business for both of you.
+Making the elevator go up and down so that people can get to their destination floor.
 
 Sounds fun?
-Lets get started!''';
+Lets get started! ''';

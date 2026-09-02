@@ -43,12 +43,12 @@ class IntroOverlay extends StatelessWidget {
                         children: [
                           Text(introBody),
                           SizedBox(height: 50),
-                          Text(
+                          /*Text(
                             'Back story',
                             style: textTheme.titleLarge!.copyWith(
                               color: fgColor,
                             ),
-                          ),
+                          ),*/
                           //SizedBox(height: 5),
                           //Text(backStoryBody),
                         ],

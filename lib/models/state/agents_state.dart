@@ -173,10 +173,6 @@ class AgentsState {
         TutorialStage.elevators1Controls => AgentLateness.neutral,
         TutorialStage.elevators2Transport10 => AgentLateness.neutral,
         TutorialStage.elevators4Destinations => AgentLateness.neutral,
-        TutorialStage.elevators5Late => a.getAgentLateness(
-          time.t,
-          fastLate: true,
-        ),
         _ => a.getAgentLateness(time.t),
       };
     }

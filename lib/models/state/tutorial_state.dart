@@ -7,7 +7,6 @@ enum TutorialStage {
   elevators2Transport10,
   elevators3TechTree,
   elevators4Destinations,
-  elevators5Late,
   finalNotes,
   done
   ;
@@ -17,8 +16,7 @@ enum TutorialStage {
       TutorialStage.elevators1Controls => TutorialStage.elevators2Transport10,
       TutorialStage.elevators2Transport10 => TutorialStage.elevators3TechTree,
       TutorialStage.elevators3TechTree => TutorialStage.elevators4Destinations,
-      TutorialStage.elevators4Destinations => TutorialStage.elevators5Late,
-      TutorialStage.elevators5Late => TutorialStage.finalNotes,
+      TutorialStage.elevators4Destinations => TutorialStage.finalNotes,
       TutorialStage.finalNotes => TutorialStage.done,
       TutorialStage.done => null,
     };
@@ -63,16 +61,10 @@ class TutorialState extends ChangeNotifier {
       if (targetLvl >= 1 && targetLvl <= 2) {
         _counter = _counter | targetLvl;
         if (_counter == (1 | 2)) {
-          _stage = .elevators5Late;
+          _stage = .finalNotes;
           _counter = 0;
         }
         // Has progress info => notify on each recorded transport
-        notifyListeners();
-      }
-    } else if (_stage == .elevators5Late) {
-      if (lateness != .neutral) {
-        _stage = .finalNotes;
-        _counter = 0;
         notifyListeners();
       }
     }

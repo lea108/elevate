@@ -191,20 +191,6 @@ class _ElevatorTutorialOverlayState extends State<ElevatorTutorialOverlay> {
           ),
           buildSkipButton(context),
         ];
-      case TutorialStage.elevators5Late:
-        return [
-          Text(
-            title5,
-            style: TextTheme.of(context).titleMedium,
-            textAlign: .center,
-          ),
-          SizedBox(height: mediumPadding),
-          Text(bodyText5),
-          SizedBox(height: 30),
-          Text('Objective:'),
-          Text('Transport a late or very person up or down.'),
-          buildSkipButton(context),
-        ];
       case TutorialStage.finalNotes:
         return [
           Text(
@@ -298,16 +284,6 @@ const bodyText4 =
 """People travel between "outside" and their office and then back again.
 
 A light on the left side of the elevator will indicate where people on the elevator wants to get off.
-""";
-
-const title5 = 'Don\'t be late ☹️😡';
-const bodyText5 =
-"""People don't have the whole day.
-
-People will show in orange when they become late, and in red when they are very late.
-
-Late people (☹️) will only give half of normal performance bonus.
-Very late people (😡) gives you a negative performance score.
 """;
 
 const finalNotes =

@@ -12,8 +12,8 @@ class MusicPice {
   final int happiness;
   final int probability;
   final int octave;
-  final int activeLengthS;
-  final int totalLengthS;
+  final double activeLengthS;
+  final double totalLengthS;
 
   MusicPice({
     required this.fileName,
@@ -146,7 +146,7 @@ class MusicComposer {
         happiness: 1,
         probability: 1,
         octave: 1,
-        activeLengthS: 5,
+        activeLengthS: 6.4,
         totalLengthS: 8,
       ),
     ]);
